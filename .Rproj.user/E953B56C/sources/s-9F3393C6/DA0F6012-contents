@@ -1,0 +1,362 @@
+---
+title: "Introduzione a R"
+subtitle: "...rapida e indolore"
+author: "Angela Andreella"
+date: "13/10/2020"
+output:
+  ioslides_presentation: 
+    css: style.css
+    incremental: false
+    small: yes
+  slidy_presentation: default
+  beamer_presentation: default
+---
+
+
+```{r setup, echo = FALSE, include = FALSE}
+knitr::opts_chunk$set(echo = F)
+```
+
+# Let's start! 
+
+## Conosciamoci e conosciamo R
+
+ -  Quanti di voi hanno **installato** R?
+ 
+ -  Quanti di voi hanno mai **usato** R o un altro linguaggio di programmazione?
+ 
+R é un grande mondo, con grandi idee e iniziative!!  ![](Images/R-LadiesGlobal.png){ width=10% }
+
+ - **Analisi riproducibili**
+ 
+ - **Free**
+ 
+ - In continua **evoluzione** ed espansione
+<center> 
+dunque.. ![](Images/download.png){width=10%}
+</center> 
+
+## Conosciamoci e conosciamo R
+
+Prima di tutto.... 
+
+<center> 
+**Aprire Rstudio** 
+</center> 
+
+
+
+Abbiamo 4 finestrelle: 
+ 
+  1. Scrittura Codice (**Script**)
+    
+  2. Esecuzione del Codice (**Console**)
+    
+  3. Files, Plots, **Help**
+    
+  4. Visualizzazione **datasets**, oggetti caricati in generale, e **storia**
+
+## Pacchetti per tutti!
+
+R fornisce una serie di pacchetti (packages) che racchiudono funzioni molto utili e di vario genere. Per esempio con i seguenti comandi:
+ 
+```{r, eval = F, echo = T}
+install.packages("xlsx") #Installiamo il pacchetto "xlsx"
+library(xlsx) #Dopo averlo installato lo richiamiamo 
+```
+
+installiamo il pacchetto ``xlsx`` e lo richiamiamo nella nostra sessione. Questo pacchetto ci permette di caricare all'interno di R dati da Excel.
+
+$\rightarrow$ per ogni cosa che volete fare esiste un pacchetto corrispondente! Se trovate questo errore in futuro:
+
+```{r, eval = F, echo = T}
+Error in library(dplyr) : there is no package called ‘dplyr’
+```
+
+significa che dovete installare il pacchetto ``dplyr``. Consiglio: errori/bug cercate su google o [stackoverflow](https://stackoverflow.com)!
+
+# Un po' di basi 
+
+## Operazioni
+
+Per le operazioni di somma, sottrazione, moltiplicazione e divisione si utilizzano $+ - * /$. Per l'elevazione a potenza si usa: $**$ o $ˆ$.
+
+```{r, echo = T, eval = F}
+(4+5)*3
+```
+
+Gli operatori logici corrispondono invece ai seguenti simboli:
+
+```{r, echo = T, eval = F}
+& #AND
+| #OR
+> #maggiore
+< #minore
+== #uguale
+!= #diverso
+>= #maggiore uguale
+<= #minore uguale
+```
+
+Attenzione! ``=`` e ``<-`` si usano per assegnare un valore a una variabile
+
+```{r, echo = T, eval = F}
+pluto = "ciao"
+```
+
+diverso da `==`!! `r emo::ji("boom")`
+
+## Operazioni
+
+Vediamo qualche esempio insieme 
+
+```{r, echo = T, eval = F}
+4==10
+5!=10
+(4==4)&(10!=1)
+8>=10
+3<20
+```
+
+ricordiamo che:
+
+```{r, echo = T, eval = F}
+TRUE==1
+```
+
+```{r, echo = T, eval = F}
+FALSE==0
+```
+
+## Altri comandi fondamentali
+
+Aiuto?
+
+```{r, echo = T, eval = F}
+help("+") #cerchiamo aiuto per capire l'uso di +
+```
+
+Cambiare working directory?
+
+```{r, echo = T, eval = F}
+setwd("il_mio_path")
+```
+
+Vedere cosa c'é nella mia working directory?
+
+```{r, echo = T, eval = F}
+ls()
+```
+
+Cancellare quello che abbiamo trovato nella working directory?
+
+```{r, echo = T, eval = F}
+rm(list = ls()) #Cancelliamo tutti gli elementi presenti
+rm(pluto) #cancelliamo l'oggetto pluto
+```
+
+## Caricamento dati
+
+Come caricare i dati? dipende... `r emo::ji("face")`
+
+Per prima cosa vedete di che formato é il vostro documento (xlsx, csv, xls, txt etc), in generale:
+
+```{r, echo = T, eval = F}
+read.table("path/file_name.txt") #formato txt
+read.csv("path/file_name.csv") #formato csv
+read.xlsx("path/file_name.xlsx") #formato xlsx
+```
+etc.. se siete indecisi usate l help o google! `r emo::ji("smile")`
+
+Proviamo insieme!
+
+Qualche funzione utile:
+
+```{r, echo = T, eval = F}
+colnames(db) 
+rownames(db)
+```
+
+# Ma le variabili? 
+
+## Tipologie di variabili
+
+Carichiamo il file di esempio:
+
+```{r, echo = T}
+DB <- read.csv("Datasets/HappinessAlcoholConsumption.csv")
+```
+
+e vediamo qualche esempio di variabile:
+
+```{r, echo = T, eval = F}
+str(DB) #con questo comando vediamo la struttura del dataset DB
+head(DB) #Vediamo le prime 6 righe/osservazioni
+View(DB) #Vediamo in finestra separata il dataset intero
+```
+
+ 1. Numeric : ``HappinessScore``
+ 
+ 2. Factor (Variabili Qualitative): ``Country`` 
+ 
+ 3. Integer: ``Beer_PerCapita`` 
+
+ma abbiamo anche character, logical, ``NA``, ``NaN``.
+
+## Tipologie di oggetti (alcuni)
+
+Vettori
+ 
+```{r, echo = T, eval = F}
+pluto <- c(1:100) #creaiamo un vettore con valori da 1 a 100
+pluto1 <- seq(1,500,5) #creaiamo un vettore con valori da 1 a 500 ogni  5 valori
+pluto2 <- rep(10,5) #creiamo un vettore dove si ripete il valore 10 5 volte
+pluto[3] #richiamiamo l'elemento del vettore pluto che sta nella 3 posizione
+pluto[1:3] #richiamiamo l'elemento del vettore pluto che sta nella 1,2,3 posizioni
+is.vector(pluto) #verifichiamo che pluto sia un vettore
+length(pluto) #dimensione del vettore pluto?
+sort(pluto) #ordiniamo pluto
+pluto/5 #dividiamo ogni elemento di pluto per 5
+```
+
+proviamo insieme! 
+
+## Tipologie di oggetti (alcuni)
+ 
+Matrici
+ 
+```{r, echo = T, eval = F}
+pippo <- matrix(data = 10, nrow = 10, ncol = 5) #Creiamo una matrice 
+#con 10 righe e 5 colonne contenente solo 10
+pippo1 <- matrix(data = pluto, nrow = 20, ncol = 5, byrow = T) #mettiamo pluto in
+#pippo! partendo dalle righe (byrow)
+pippo2 <- cbind(pluto,pluto1) #Uniamo i due vettori per colonna
+pippo3 <- rbind(pluto,pluto1) #Uniamo i due vettori per riga
+dim(pippo) #Dimensione di pippo?
+ncol(pippo) #numero di colonne di pippo?
+nrow(pippo) #numero di righe di pippo?
+is.matrix(pippo) #Check che pippo sia una matrice 
+```
+
+se non vi ricordate $\rightarrow$ `help(matrix)`! `r emo::ji("boom")`
+
+## Tipologie di oggetti (alcuni)
+ 
+Data frame
+ 
+```{r, echo = T, eval = F}
+is.data.frame(DB)
+rick <- data.frame(pippo2[1:20,]) #creiamo un dataframe di nome rick 
+#che prende le prime 20 osservazioni di pippo2
+dim(rick) #Dimensione? nrow, ncol etc come matrix
+colnames(rick) #Nomi colonna?
+rownames(rick) #Nomi riga?
+rownames(rick) <- letters[1:dim(rick)[1]] #rinominiamo le righe di rick 
+#come le prime 20 lettere dell'alfabeto
+rick[10,2] #Richiamiamo l'elemento della 10 riga e 2 colonna
+rick$pluto #richiamo la variabile pluto (prima colonna)
+```
+ 
+Che differenza c'é tra `data.frame` e `matrix`? `r emo::ji("question")`
+
+# Prima di continuare.. 
+
+##
+
+ 1. Domande `r emo::ji("question")`
+ 
+ 2. Ma perdo tutto quello che ho caricato/scritto?
+ 
+```{r, echo = T, eval = F}
+save(rick, file = "your_path/il_mio_primo_rda.rda") #salviamo l'oggetto 
+#rick in il_mio_primo_rda
+load("your_path/il_mio_primo_rda.rda") #e lo ricarico sulla working directory!!
+``` 
+
+# Un po' di analisi descrittiva 
+
+## Variabili qualitative 
+### Tabelle di Frequenza
+
+Frequenze assolute
+
+```{r, echo = T}
+fa_h <- table(DB$Hemisphere)
+addmargins(fa_h) #Aggiungi totale alla tabella fa_reg
+``` 
+
+## Variabili qualitative 
+### Tabelle di Frequenza
+
+Frequenze relative
+
+```{r, echo = T}
+fa_h/nrow(DB)
+fr_h <- prop.table(fa_h)
+addmargins(fr_h) #Aggiungi totale alla tabella fr_reg
+```
+
+## Variabili qualitative 
+### Grafici
+
+![](Images/pie1.gif){width=100%}
+
+## Variabili qualitative 
+### Grafici
+
+Barplot
+
+```{r, echo = T}
+barplot(fa_h)
+```
+
+## Variabili qualitative 
+### Grafici
+
+Grafico a torta 
+
+```{r, echo = T}
+pie(fa_h)
+```
+
+## Variabili quantitative 
+### Tabelle di Frequenza e altro
+
+Per le tabelle di frequenza assolute e relative valgono gli stessi comandi usati per la variabile qualitativa ``Hemisphere``.
+
+Con le variabili quantitative abbiamo anche:
+
+```{r, echo = T}
+min(DB$HappinessScore)
+```
+
+```{r, echo = T}
+max(DB$HappinessScore)
+```
+
+```{r, echo = T}
+summary(DB$HappinessScore)
+```
+
+```{r, echo = T}
+mean(DB$HappinessScore)
+```
+
+```{r, echo = T}
+median(DB$HappinessScore)
+```
+
+## Variabili quantitative 
+### Grafici
+
+Istogramma
+```{r, echo = T, eval = F}
+hist(DB$HappinessScore,col = "blue", main = "Happiness Score")
+hist(DB$HappinessScore, breaks = 20) #con breaks decidi gli intervalli!
+```
+
+Boxplot
+
+```{r, echo = T, eval = F}
+boxplot(DB$HappinessScore,col = "blue")
+```

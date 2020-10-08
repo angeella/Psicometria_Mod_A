@@ -1,0 +1,671 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  ignorenonframetext,
+]{beamer}
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{part title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{part title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Introduzione a R},
+  pdfauthor={Angela Andreella},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\newif\ifbibliography
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\title{Introduzione a R}
+\subtitle{\ldots rapida e indolore}
+\author{Angela Andreella}
+\date{13/10/2020}
+\logo{\includegraphics{Images/unipd\_logo.png}}
+
+\begin{document}
+\frame{\titlepage}
+
+\hypertarget{lets-start}{%
+\section{Let's start!}\label{lets-start}}
+
+\begin{frame}{Conosciamoci e conosciamo R}
+\protect\hypertarget{conosciamoci-e-conosciamo-r}{}
+\begin{itemize}
+\item
+  Quanti di voi hanno \textbf{installato} R?
+\item
+  Quanti di voi hanno mai \textbf{usato} R o un altro linguaggio di
+  programmazione?
+\end{itemize}
+
+R é un grande mondo, con grandi idee e iniziative!!
+\includegraphics[width=0.1\textwidth,height=\textheight]{Images/R-LadiesGlobal.png}
+
+\begin{itemize}
+\item
+  \textbf{Analisi riproducibili}
+\item
+  \textbf{Free}
+\item
+  In continua \textbf{evoluzione} ed espansione
+
+  dunque..
+  \includegraphics[width=0.1\textwidth,height=\textheight]{Images/download.png}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Conosciamoci e conosciamo R}
+\protect\hypertarget{conosciamoci-e-conosciamo-r-1}{}
+Prima di tutto\ldots.
+
+\textbf{Aprire Rstudio}
+
+Abbiamo 4 finestrelle:
+
+\begin{enumerate}
+\item
+  Scrittura Codice (\textbf{Script})
+\item
+  Esecuzione del Codice (\textbf{Console})
+\item
+  Files, Plots, \textbf{Help}
+\item
+  Visualizzazione \textbf{datasets}, oggetti caricati in generale, e
+  \textbf{storia}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]{Pacchetti per tutti!}
+\protect\hypertarget{pacchetti-per-tutti}{}
+R fornisce una serie di pacchetti (packages) che racchiudono funzioni
+molto utili e di vario genere. Per esempio con i seguenti comandi:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{install.packages}\NormalTok{(}\StringTok{"xlsx"}\NormalTok{) }\CommentTok{\#Installiamo il pacchetto "xlsx"}
+\KeywordTok{library}\NormalTok{(xlsx) }\CommentTok{\#Dopo averlo installato lo richiamiamo }
+\end{Highlighting}
+\end{Shaded}
+
+installiamo il pacchetto \texttt{xlsx} e lo richiamiamo nella nostra
+sessione. Questo pacchetto ci permette di caricare all'interno di R dati
+da Excel.
+
+\(\rightarrow\) per ogni cosa che volete fare esiste un pacchetto
+corrispondente! Se trovate questo errore in futuro:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Error }\ControlFlowTok{in} \KeywordTok{library}\NormalTok{(dplyr) }\OperatorTok{:}\StringTok{ }\NormalTok{there is no package called ‘dplyr’}
+\end{Highlighting}
+\end{Shaded}
+
+significa che dovete installare il pacchetto \texttt{dplyr}. Consiglio:
+errori/bug cercate su google o
+\href{https://stackoverflow.com}{stackoverflow}!
+\end{frame}
+
+\hypertarget{un-po-di-basi}{%
+\section{Un po' di basi}\label{un-po-di-basi}}
+
+\begin{frame}[fragile]{Operazioni}
+\protect\hypertarget{operazioni}{}
+Per le operazioni di somma, sottrazione, moltiplicazione e divisione si
+utilizzano \(+ - * /\). Per l'elevazione a potenza si usa: \(**\) o
+\(ˆ\).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(}\DecValTok{4}\OperatorTok{+}\DecValTok{5}\NormalTok{)}\OperatorTok{*}\DecValTok{3}
+\end{Highlighting}
+\end{Shaded}
+
+Gli operatori logici corrispondono invece ai seguenti simboli:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{\&}\StringTok{ }\CommentTok{\#AND}
+\ErrorTok{|}\StringTok{ }\CommentTok{\#OR}
+\ErrorTok{\textgreater{}}\StringTok{ }\CommentTok{\#maggiore}
+\ErrorTok{\textless{}}\StringTok{ }\CommentTok{\#minore}
+\ErrorTok{==}\StringTok{ }\CommentTok{\#uguale}
+\ErrorTok{!=}\StringTok{ }\CommentTok{\#diverso}
+\ErrorTok{\textgreater{}=}\StringTok{ }\CommentTok{\#maggiore uguale}
+\ErrorTok{\textless{}=}\StringTok{ }\CommentTok{\#minore uguale}
+\end{Highlighting}
+\end{Shaded}
+
+Attenzione! \texttt{=} e \texttt{\textless{}-} si usano per assegnare un
+valore a una variabile
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pluto =}\StringTok{ "ciao"}
+\end{Highlighting}
+\end{Shaded}
+
+diverso da \texttt{==}!! 💥
+\end{frame}
+
+\begin{frame}[fragile]{Operazioni}
+\protect\hypertarget{operazioni-1}{}
+Vediamo qualche esempio insieme
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DecValTok{4}\OperatorTok{==}\DecValTok{10}
+\DecValTok{5}\OperatorTok{!=}\DecValTok{10}
+\NormalTok{(}\DecValTok{4}\OperatorTok{==}\DecValTok{4}\NormalTok{)}\OperatorTok{\&}\NormalTok{(}\DecValTok{10}\OperatorTok{!=}\DecValTok{1}\NormalTok{)}
+\DecValTok{8}\OperatorTok{\textgreater{}=}\DecValTok{10}
+\DecValTok{3}\OperatorTok{\textless{}}\DecValTok{20}
+\end{Highlighting}
+\end{Shaded}
+
+ricordiamo che:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OtherTok{TRUE}\OperatorTok{==}\DecValTok{1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OtherTok{FALSE}\OperatorTok{==}\DecValTok{0}
+\end{Highlighting}
+\end{Shaded}
+\end{frame}
+
+\begin{frame}[fragile]{Altri comandi fondamentali}
+\protect\hypertarget{altri-comandi-fondamentali}{}
+Aiuto?
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{help}\NormalTok{(}\StringTok{"+"}\NormalTok{) }\CommentTok{\#cerchiamo aiuto per capire l\textquotesingle{}uso di +}
+\end{Highlighting}
+\end{Shaded}
+
+Cambiare working directory?
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{setwd}\NormalTok{(}\StringTok{"il\_mio\_path"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Vedere cosa c'é nella mia working directory?
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ls}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+Cancellare quello che abbiamo trovato nella working directory?
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{rm}\NormalTok{(}\DataTypeTok{list =} \KeywordTok{ls}\NormalTok{()) }\CommentTok{\#Cancelliamo tutti gli elementi presenti}
+\KeywordTok{rm}\NormalTok{(pluto) }\CommentTok{\#cancelliamo l\textquotesingle{}oggetto pluto}
+\end{Highlighting}
+\end{Shaded}
+\end{frame}
+
+\begin{frame}[fragile]{Caricamento dati}
+\protect\hypertarget{caricamento-dati}{}
+Come caricare i dati? dipende\ldots{} 😼
+
+Per prima cosa vedete di che formato é il vostro documento (xlsx, csv,
+xls, txt etc), in generale:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{read.table}\NormalTok{(}\StringTok{"path/file\_name.txt"}\NormalTok{) }\CommentTok{\#formato txt}
+\KeywordTok{read.csv}\NormalTok{(}\StringTok{"path/file\_name.csv"}\NormalTok{) }\CommentTok{\#formato csv}
+\KeywordTok{read.xlsx}\NormalTok{(}\StringTok{"path/file\_name.xlsx"}\NormalTok{) }\CommentTok{\#formato xlsx}
+\end{Highlighting}
+\end{Shaded}
+
+etc.. se siete indecisi usate l help o google! 😄
+
+Proviamo insieme!
+
+Qualche funzione utile:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{colnames}\NormalTok{(db) }
+\KeywordTok{rownames}\NormalTok{(db)}
+\end{Highlighting}
+\end{Shaded}
+\end{frame}
+
+\hypertarget{ma-le-variabili}{%
+\section{Ma le variabili?}\label{ma-le-variabili}}
+
+\begin{frame}[fragile]{Tipologie di variabili}
+\protect\hypertarget{tipologie-di-variabili}{}
+Carichiamo il file di esempio:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{DB \textless{}{-}}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{"Datasets/HappinessAlcoholConsumption.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+e vediamo qualche esempio di variabile:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{str}\NormalTok{(DB) }\CommentTok{\#con questo comando vediamo la struttura del dataset DB}
+\KeywordTok{head}\NormalTok{(DB) }\CommentTok{\#Vediamo le prime 6 righe/osservazioni}
+\KeywordTok{View}\NormalTok{(DB) }\CommentTok{\#Vediamo in finestra separata il dataset intero}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\item
+  Numeric : \texttt{HappinessScore}
+\item
+  Factor (Variabili Qualitative): \texttt{Country}
+\item
+  Integer: \texttt{Beer\_PerCapita}
+\end{enumerate}
+
+ma abbiamo anche character, logical, \texttt{NA}, \texttt{NaN}.
+\end{frame}
+
+\begin{frame}[fragile]{Tipologie di oggetti (alcuni)}
+\protect\hypertarget{tipologie-di-oggetti-alcuni}{}
+Vettori
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pluto \textless{}{-}}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{100}\NormalTok{) }\CommentTok{\#creaiamo un vettore con valori da 1 a 100}
+\NormalTok{pluto1 \textless{}{-}}\StringTok{ }\KeywordTok{seq}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{500}\NormalTok{,}\DecValTok{5}\NormalTok{) }\CommentTok{\#creaiamo un vettore con valori da 1 a 500 ogni  5 valori}
+\NormalTok{pluto2 \textless{}{-}}\StringTok{ }\KeywordTok{rep}\NormalTok{(}\DecValTok{10}\NormalTok{,}\DecValTok{5}\NormalTok{) }\CommentTok{\#creiamo un vettore dove si ripete il valore 10 5 volte}
+\NormalTok{pluto[}\DecValTok{3}\NormalTok{] }\CommentTok{\#richiamiamo l\textquotesingle{}elemento del vettore pluto che sta nella 3 posizione}
+\NormalTok{pluto[}\DecValTok{1}\OperatorTok{:}\DecValTok{3}\NormalTok{] }\CommentTok{\#richiamiamo l\textquotesingle{}elemento del vettore pluto che sta nella 1,2,3 posizioni}
+\KeywordTok{is.vector}\NormalTok{(pluto) }\CommentTok{\#verifichiamo che pluto sia un vettore}
+\KeywordTok{length}\NormalTok{(pluto) }\CommentTok{\#dimensione del vettore pluto?}
+\KeywordTok{sort}\NormalTok{(pluto) }\CommentTok{\#ordiniamo pluto}
+\NormalTok{pluto}\OperatorTok{/}\DecValTok{5} \CommentTok{\#dividiamo ogni elemento di pluto per 5}
+\end{Highlighting}
+\end{Shaded}
+
+proviamo insieme!
+\end{frame}
+
+\begin{frame}[fragile]{Tipologie di oggetti (alcuni)}
+\protect\hypertarget{tipologie-di-oggetti-alcuni-1}{}
+Matrici
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pippo \textless{}{-}}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\DataTypeTok{data =} \DecValTok{10}\NormalTok{, }\DataTypeTok{nrow =} \DecValTok{10}\NormalTok{, }\DataTypeTok{ncol =} \DecValTok{5}\NormalTok{) }\CommentTok{\#Creiamo una matrice }
+\CommentTok{\#con 10 righe e 5 colonne contenente solo 10}
+\NormalTok{pippo1 \textless{}{-}}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ pluto, }\DataTypeTok{nrow =} \DecValTok{20}\NormalTok{, }\DataTypeTok{ncol =} \DecValTok{5}\NormalTok{, }\DataTypeTok{byrow =}\NormalTok{ T) }\CommentTok{\#mettiamo pluto in}
+\CommentTok{\#pippo! partendo dalle righe (byrow)}
+\NormalTok{pippo2 \textless{}{-}}\StringTok{ }\KeywordTok{cbind}\NormalTok{(pluto,pluto1) }\CommentTok{\#Uniamo i due vettori per colonna}
+\NormalTok{pippo3 \textless{}{-}}\StringTok{ }\KeywordTok{rbind}\NormalTok{(pluto,pluto1) }\CommentTok{\#Uniamo i due vettori per riga}
+\KeywordTok{dim}\NormalTok{(pippo) }\CommentTok{\#Dimensione di pippo?}
+\KeywordTok{ncol}\NormalTok{(pippo) }\CommentTok{\#numero di colonne di pippo?}
+\KeywordTok{nrow}\NormalTok{(pippo) }\CommentTok{\#numero di righe di pippo?}
+\KeywordTok{is.matrix}\NormalTok{(pippo) }\CommentTok{\#Check che pippo sia una matrice }
+\end{Highlighting}
+\end{Shaded}
+
+se non vi ricordate \(\rightarrow\) \texttt{help(matrix)}! 💥
+\end{frame}
+
+\begin{frame}[fragile]{Tipologie di oggetti (alcuni)}
+\protect\hypertarget{tipologie-di-oggetti-alcuni-2}{}
+Data frame
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{is.data.frame}\NormalTok{(DB)}
+\NormalTok{rick \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(pippo2[}\DecValTok{1}\OperatorTok{:}\DecValTok{20}\NormalTok{,]) }\CommentTok{\#creiamo un dataframe di nome rick }
+\CommentTok{\#che prende le prime 20 osservazioni di pippo2}
+\KeywordTok{dim}\NormalTok{(rick) }\CommentTok{\#Dimensione? nrow, ncol etc come matrix}
+\KeywordTok{colnames}\NormalTok{(rick) }\CommentTok{\#Nomi colonna?}
+\KeywordTok{rownames}\NormalTok{(rick) }\CommentTok{\#Nomi riga?}
+\KeywordTok{rownames}\NormalTok{(rick) \textless{}{-}}\StringTok{ }\NormalTok{letters[}\DecValTok{1}\OperatorTok{:}\KeywordTok{dim}\NormalTok{(rick)[}\DecValTok{1}\NormalTok{]] }\CommentTok{\#rinominiamo le righe di rick }
+\CommentTok{\#come le prime 20 lettere dell\textquotesingle{}alfabeto}
+\NormalTok{rick[}\DecValTok{10}\NormalTok{,}\DecValTok{2}\NormalTok{] }\CommentTok{\#Richiamiamo l\textquotesingle{}elemento della 10 riga e 2 colonna}
+\NormalTok{rick}\OperatorTok{$}\NormalTok{pluto }\CommentTok{\#richiamo la variabile pluto (prima colonna)}
+\end{Highlighting}
+\end{Shaded}
+
+Che differenza c'é tra \texttt{data.frame} e \texttt{matrix}? ❓
+\end{frame}
+
+\hypertarget{prima-di-continuare..}{%
+\section{Prima di continuare..}\label{prima-di-continuare..}}
+
+\begin{frame}[fragile]{}
+\protect\hypertarget{section}{}
+\begin{enumerate}
+\item
+  Domande ❓
+\item
+  Ma perdo tutto quello che ho caricato/scritto?
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{save}\NormalTok{(rick, }\DataTypeTok{file =} \StringTok{"your\_path/il\_mio\_primo\_rda.rda"}\NormalTok{) }\CommentTok{\#salviamo l\textquotesingle{}oggetto }
+\CommentTok{\#rick in il\_mio\_primo\_rda}
+\KeywordTok{load}\NormalTok{(}\StringTok{"your\_path/il\_mio\_primo\_rda.rda"}\NormalTok{) }\CommentTok{\#e lo ricarico sulla working directory!!}
+\end{Highlighting}
+\end{Shaded}
+\end{frame}
+
+\hypertarget{un-po-di-analisi-descrittiva}{%
+\section{Un po' di analisi
+descrittiva}\label{un-po-di-analisi-descrittiva}}
+
+\begin{frame}[fragile]{Variabili qualitative}
+\protect\hypertarget{variabili-qualitative}{}
+\begin{block}{Tabelle di Frequenza}
+\protect\hypertarget{tabelle-di-frequenza}{}
+Frequenze assolute
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fa\_h \textless{}{-}}\StringTok{ }\KeywordTok{table}\NormalTok{(DB}\OperatorTok{$}\NormalTok{Hemisphere)}
+\KeywordTok{addmargins}\NormalTok{(fa\_h) }\CommentTok{\#Aggiungi totale alla tabella fa\_reg}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  both north  noth south   Sum 
+##     5    92     4    21   122
+\end{verbatim}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Variabili qualitative}
+\protect\hypertarget{variabili-qualitative-1}{}
+\begin{block}{Tabelle di Frequenza}
+\protect\hypertarget{tabelle-di-frequenza-1}{}
+Frequenze relative
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fa\_h}\OperatorTok{/}\KeywordTok{nrow}\NormalTok{(DB)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##       both      north       noth      south 
+## 0.04098361 0.75409836 0.03278689 0.17213115
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fr\_h \textless{}{-}}\StringTok{ }\KeywordTok{prop.table}\NormalTok{(fa\_h)}
+\KeywordTok{addmargins}\NormalTok{(fr\_h) }\CommentTok{\#Aggiungi totale alla tabella fr\_reg}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##       both      north       noth      south        Sum 
+## 0.04098361 0.75409836 0.03278689 0.17213115 1.00000000
+\end{verbatim}
+\end{block}
+\end{frame}
+
+\begin{frame}{Variabili qualitative}
+\protect\hypertarget{variabili-qualitative-2}{}
+\begin{block}{Grafici}
+\protect\hypertarget{grafici}{}
+\includegraphics[width=1\textwidth,height=\textheight]{Images/pie1.gif}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Variabili qualitative}
+\protect\hypertarget{variabili-qualitative-3}{}
+\begin{block}{Grafici}
+\protect\hypertarget{grafici-1}{}
+Barplot
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{barplot}\NormalTok{(fa\_h)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{IntRoduzione_a_R_files/figure-beamer/unnamed-chunk-23-1.pdf}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Variabili qualitative}
+\protect\hypertarget{variabili-qualitative-4}{}
+\begin{block}{Grafici}
+\protect\hypertarget{grafici-2}{}
+Grafico a torta
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{pie}\NormalTok{(fa\_h)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{IntRoduzione_a_R_files/figure-beamer/unnamed-chunk-24-1.pdf}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Variabili quantitative}
+\protect\hypertarget{variabili-quantitative}{}
+\begin{block}{Tabelle di Frequenza e altro}
+\protect\hypertarget{tabelle-di-frequenza-e-altro}{}
+Per le tabelle di frequenza assolute e relative valgono gli stessi
+comandi usati per la variabile qualitativa \texttt{Hemisphere}.
+
+Con le variabili quantitative abbiamo anche:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{min}\NormalTok{(DB}\OperatorTok{$}\NormalTok{HappinessScore)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3.069
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{max}\NormalTok{(DB}\OperatorTok{$}\NormalTok{HappinessScore)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 7.526
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(DB}\OperatorTok{$}\NormalTok{HappinessScore)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   3.069   4.528   5.542   5.525   6.477   7.526
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{mean}\NormalTok{(DB}\OperatorTok{$}\NormalTok{HappinessScore)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 5.524828
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{median}\NormalTok{(DB}\OperatorTok{$}\NormalTok{HappinessScore)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 5.542
+\end{verbatim}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Variabili quantitative}
+\protect\hypertarget{variabili-quantitative-1}{}
+\begin{block}{Grafici}
+\protect\hypertarget{grafici-3}{}
+Istogramma
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{hist}\NormalTok{(DB}\OperatorTok{$}\NormalTok{HappinessScore,}\DataTypeTok{col =} \StringTok{"blue"}\NormalTok{, }\DataTypeTok{main =} \StringTok{"Happiness Score"}\NormalTok{)}
+\KeywordTok{hist}\NormalTok{(DB}\OperatorTok{$}\NormalTok{HappinessScore, }\DataTypeTok{breaks =} \DecValTok{20}\NormalTok{) }\CommentTok{\#con breaks decidi gli intervalli!}
+\end{Highlighting}
+\end{Shaded}
+
+Boxplot
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{boxplot}\NormalTok{(DB}\OperatorTok{$}\NormalTok{HappinessScore,}\DataTypeTok{col =} \StringTok{"blue"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+\end{block}
+\end{frame}
+
+\end{document}
