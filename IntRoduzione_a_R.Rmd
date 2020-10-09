@@ -280,7 +280,7 @@ load("your_path/il_mio_primo_rda.rda") #e lo ricarico sulla working directory!!
 ## Variabili qualitative 
 ### Tabelle di Frequenza
 
-Frequenze assolute
+<br>Frequenze assolute
 
 ```{r, echo = T}
 fa_h <- table(DB$Hemisphere)
@@ -290,7 +290,7 @@ addmargins(fa_h) #Aggiungi totale alla tabella fa_reg
 ## Variabili qualitative 
 ### Tabelle di Frequenza
 
-Frequenze relative
+<br>Frequenze relative
 
 ```{r, echo = T}
 fa_h/nrow(DB)
@@ -300,9 +300,9 @@ addmargins(fr_h) #Aggiungi totale alla tabella fr_reg
 
 ## Variabili qualitative 
 ### Grafici
-<br>
-<br>
-![](Images/pie1.gif){width=100%}
+
+
+<br>![](Images/pie1.gif){width=100%}
 
 ## Variabili qualitative 
 ### Grafici
@@ -310,22 +310,23 @@ addmargins(fr_h) #Aggiungi totale alla tabella fr_reg
 Barplot
 <br>
 
-```{r, echo = T}
-barplot(fa_h, col = "lightblue")
+```{r, echo = T, out.width = '60%', fig.align="center"}
+barplot(fa_h, col = rainbow(length(levels(DB$Hemisphere))))
 ```
 
-## Variabili qualitative | Grafici
-<br>
-Grafico a torta 
-<br>
-```{r, echo = T}
-pie(fa_h, col = "lightblue")
+## Variabili qualitative
+### Grafici
+
+<br>Grafico a torta 
+
+```{r, echo = T, fig.align="center"}
+pie(fa_h, col = rainbow(length(levels(DB$Hemisphere))))
 ```
 
 ## Variabili quantitative 
 ### Tabelle di Frequenza e altro
 
-Per le tabelle di frequenza assolute e relative valgono gli stessi comandi usati per la variabile qualitativa ``Hemisphere``.
+<br>Per le tabelle di frequenza assolute e relative valgono gli stessi comandi usati per la variabile qualitativa ``Hemisphere``.
 
 Con le variabili quantitative abbiamo anche:
 
@@ -336,6 +337,13 @@ min(DB$HappinessScore)
 ```{r, echo = T}
 max(DB$HappinessScore)
 ```
+
+
+
+## Variabili quantitative 
+### Tabelle di Frequenza e altro
+
+<br>
 
 ```{r, echo = T}
 summary(DB$HappinessScore)
@@ -352,7 +360,7 @@ median(DB$HappinessScore)
 ## Variabili quantitative 
 ### Grafici
 
-Istogramma
+<br>Istogramma
 ```{r, echo = T, eval = F}
 hist(DB$HappinessScore, main = "Happiness Score", col = "lightblue")
 hist(DB$HappinessScore, breaks = 20, col = "lightblue") #con breaks decidi gli intervalli!
