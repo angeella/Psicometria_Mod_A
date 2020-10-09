@@ -8,6 +8,7 @@ output:
     css: style.css
     incremental: false
     small: yes
+    widescreen: true
   slidy_presentation: default
   beamer_presentation: default
 ---
@@ -19,67 +20,67 @@ knitr::opts_chunk$set(echo = F)
 
 # Let's start! 
 
-## Conosciamoci e conosciamo R
+## use...R!
 
  -  Quanti di voi hanno **installato** R?
  
  -  Quanti di voi hanno mai **usato** R o un altro linguaggio di programmazione?
  
-R é un grande mondo, con grandi idee e iniziative!!  ![](Images/R-LadiesGlobal.png){ width=10% }
+Perch&egrave; usare R?
 
  - **Analisi riproducibili**
  
- - **Free**
+ - Free, **Open-Source**
  
  - In continua **evoluzione** ed espansione
+ 
+ - Large **community**
+ 
 <center> 
-dunque.. ![](Images/download.png){width=10%}
+![](Images/download.png){width=20%} <style>
+        p {line-width: 52em;}
+    </style>![](Images/R-LadiesGlobal.png){ width=20% }
 </center> 
 
-## Conosciamoci e conosciamo R
+## use...R! 
 
-Prima di tutto.... 
-
-<center> 
-**Aprire Rstudio** 
-</center> 
-
-
+Prima di tutto.... **Aprire Rstudio**! 
 
 Abbiamo 4 finestrelle: 
- 
-  1. Scrittura Codice (**Script**)
-    
-  2. Esecuzione del Codice (**Console**)
-    
-  3. Files, Plots, **Help**
-    
-  4. Visualizzazione **datasets**, oggetti caricati in generale, e **storia**
+
+<center>
+![](Images/Rstudio.JPG){ width=80% }
+</center> 
+
 
 ## Pacchetti per tutti!
 
-R fornisce una serie di pacchetti (packages) che racchiudono funzioni molto utili e di vario genere. Per esempio con i seguenti comandi:
+R fornisce una serie di pacchetti (**packages**) che racchiudono funzioni molto utili e di vario genere. Per esempio con i seguenti comandi:
  
 ```{r, eval = F, echo = T}
 install.packages("xlsx") #Installiamo il pacchetto "xlsx"
 library(xlsx) #Dopo averlo installato lo richiamiamo 
 ```
 
-installiamo il pacchetto ``xlsx`` e lo richiamiamo nella nostra sessione. Questo pacchetto ci permette di caricare all'interno di R dati da Excel.
+Tramite questi comandi, installiamo il pacchetto ``xlsx`` e lo richiamiamo nella nostra sessione. Questo pacchetto ci permette di caricare all'interno di R dati da Excel.
 
 $\rightarrow$ per ogni cosa che volete fare esiste un pacchetto corrispondente! Se trovate questo errore in futuro:
 
 ```{r, eval = F, echo = T}
-Error in library(dplyr) : there is no package called ‘dplyr’
+Error in library(dplyr) : there is no package called dplyr
 ```
 
-significa che dovete installare il pacchetto ``dplyr``. Consiglio: errori/bug cercate su google o [stackoverflow](https://stackoverflow.com)!
+significa che dovete installare il pacchetto ``dplyr``. Consiglio `r emo::ji("face")`: errori/bug cercate su google o [stackoverflow](https://stackoverflow.com)!
+
+<center>
+![](Images/stackoverflow.png){ width=30% }
+</center>
 
 # Un po' di basi 
 
 ## Operazioni
 
-Per le operazioni di somma, sottrazione, moltiplicazione e divisione si utilizzano $+ - * /$. Per l'elevazione a potenza si usa: $**$ o $ˆ$.
+Per le operazioni di somma, sottrazione, moltiplicazione e divisione si utilizzano $+ - * /$. Per l'elevazione a potenza si usa: $**$ o ^.
 
 ```{r, echo = T, eval = F}
 (4+5)*3
@@ -98,13 +99,13 @@ Gli operatori logici corrispondono invece ai seguenti simboli:
 <= #minore uguale
 ```
 
-Attenzione! ``=`` e ``<-`` si usano per assegnare un valore a una variabile
+Attenzione `r emo::ji("boom")`! ``=`` e ``<-`` si usano per assegnare un valore a una variabile
 
 ```{r, echo = T, eval = F}
 pluto = "ciao"
 ```
 
-diverso da `==`!! `r emo::ji("boom")`
+diverso da `==`!! 
 
 ## Operazioni
 
@@ -118,7 +119,7 @@ Vediamo qualche esempio insieme
 3<20
 ```
 
-ricordiamo che:
+Attenzione! `r emo::ji("boom")`
 
 ```{r, echo = T, eval = F}
 TRUE==1
@@ -130,25 +131,25 @@ FALSE==0
 
 ## Altri comandi fondamentali
 
-Aiuto?
+**Aiuto?**
 
 ```{r, echo = T, eval = F}
 help("+") #cerchiamo aiuto per capire l'uso di +
 ```
 
-Cambiare working directory?
+**Cambiare working directory?**
 
 ```{r, echo = T, eval = F}
 setwd("il_mio_path")
 ```
 
-Vedere cosa c'é nella mia working directory?
+**Vedere cosa c'&egrave nella mia working directory?**
 
 ```{r, echo = T, eval = F}
 ls()
 ```
 
-Cancellare quello che abbiamo trovato nella working directory?
+**Cancellare quello che abbiamo trovato nella working directory?**
 
 ```{r, echo = T, eval = F}
 rm(list = ls()) #Cancelliamo tutti gli elementi presenti
@@ -159,14 +160,15 @@ rm(pluto) #cancelliamo l'oggetto pluto
 
 Come caricare i dati? dipende... `r emo::ji("face")`
 
-Per prima cosa vedete di che formato é il vostro documento (xlsx, csv, xls, txt etc), in generale:
+Per prima cosa vedete il **formato** del vostro documento (xlsx, csv, xls, txt etc), in generale, vi sar&agrave un comando corrispondente:
 
 ```{r, echo = T, eval = F}
 read.table("path/file_name.txt") #formato txt
 read.csv("path/file_name.csv") #formato csv
 read.xlsx("path/file_name.xlsx") #formato xlsx
 ```
-etc.. se siete indecisi usate l help o google! `r emo::ji("smile")`
+
+etc.. se siete indecisi usate l'help, google,stackoverflow o [R-bloggers](https://www.r-bloggers.com/)! `r emo::ji("smile")`
 
 Proviamo insieme!
 
@@ -205,7 +207,7 @@ ma abbiamo anche character, logical, ``NA``, ``NaN``.
 
 ## Tipologie di oggetti (alcuni)
 
-Vettori
+**Vettori**
  
 ```{r, echo = T, eval = F}
 pluto <- c(1:100) #creaiamo un vettore con valori da 1 a 100
@@ -223,7 +225,7 @@ proviamo insieme!
 
 ## Tipologie di oggetti (alcuni)
  
-Matrici
+**Matrici**
  
 ```{r, echo = T, eval = F}
 pippo <- matrix(data = 10, nrow = 10, ncol = 5) #Creiamo una matrice 
@@ -238,11 +240,11 @@ nrow(pippo) #numero di righe di pippo?
 is.matrix(pippo) #Check che pippo sia una matrice 
 ```
 
-se non vi ricordate $\rightarrow$ `help(matrix)`! `r emo::ji("boom")`
+se non vi ricordate $\rightarrow$ `help(matrix)`! `r emo::ji("boom")` 
 
 ## Tipologie di oggetti (alcuni)
  
-Data frame
+**Data frame**
  
 ```{r, echo = T, eval = F}
 is.data.frame(DB)
@@ -257,7 +259,7 @@ rick[10,2] #Richiamiamo l'elemento della 10 riga e 2 colonna
 rick$pluto #richiamo la variabile pluto (prima colonna)
 ```
  
-Che differenza c'é tra `data.frame` e `matrix`? `r emo::ji("question")`
+Che differenza c'&egrave tra `data.frame` e `matrix`? `r emo::ji("question")`
 
 # Prima di continuare.. 
 
@@ -265,7 +267,7 @@ Che differenza c'é tra `data.frame` e `matrix`? `r emo::ji("question")`
 
  1. Domande `r emo::ji("question")`
  
- 2. Ma perdo tutto quello che ho caricato/scritto?
+ 2. Ma perdo tutto quello che ho caricato/scritto? No ovviamente `r emo::ji("smile")`
  
 ```{r, echo = T, eval = F}
 save(rick, file = "your_path/il_mio_primo_rda.rda") #salviamo l'oggetto 
@@ -298,25 +300,26 @@ addmargins(fr_h) #Aggiungi totale alla tabella fr_reg
 
 ## Variabili qualitative 
 ### Grafici
-
+<br>
+<br>
 ![](Images/pie1.gif){width=100%}
 
 ## Variabili qualitative 
 ### Grafici
-
+<br>
 Barplot
+<br>
 
 ```{r, echo = T}
-barplot(fa_h)
+barplot(fa_h, col = "lightblue")
 ```
 
-## Variabili qualitative 
-### Grafici
-
+## Variabili qualitative | Grafici
+<br>
 Grafico a torta 
-
+<br>
 ```{r, echo = T}
-pie(fa_h)
+pie(fa_h, col = "lightblue")
 ```
 
 ## Variabili quantitative 
@@ -351,12 +354,36 @@ median(DB$HappinessScore)
 
 Istogramma
 ```{r, echo = T, eval = F}
-hist(DB$HappinessScore,col = "blue", main = "Happiness Score")
-hist(DB$HappinessScore, breaks = 20) #con breaks decidi gli intervalli!
+hist(DB$HappinessScore, main = "Happiness Score", col = "lightblue")
+hist(DB$HappinessScore, breaks = 20, col = "lightblue") #con breaks decidi gli intervalli!
 ```
 
 Boxplot
 
 ```{r, echo = T, eval = F}
-boxplot(DB$HappinessScore,col = "blue")
+boxplot(DB$HappinessScore,col = "lightblue")
 ```
+
+# Vuoi diventare un supeR useR?
+
+## Cosa fare?
+
+- Allenarsi `r emo::ji("sports")`
+
+- Risolvere i bug da soli `r emo::ji("bug")`
+
+- Documentarsi `r emo::ji("book")`:
+
+   - Google, [R-bloggers](https://www.r-bloggers.com/), ...
+
+   - [R Cookbook](https://www.amazon.com/Cookbook-OReilly-Cookbooks-Paul-Teetor/dp/0596809158/ref=dp_rm_title_0)
+   
+   - [R in a Nutshell](https://www.amazon.com/R-Nutshell-In-OReilly/dp/144931208X/ref=dp_rm_title_3)
+   
+   - [Learning R](https://www.amazon.com/Learning-R-Richard-Cotton/dp/1449357105/ref=dp_rm_title_1)
+   
+   - [An Introduction to Statistical Learning: with Applications in R](https://www.amazon.com/Introduction-Statistical-Learning-Applications-Statistics/dp/1461471370/ref=pd_sim_14_1?ie=UTF8&dpID=41oQwj8rS0L&dpSrc=sims&preST=_AC_UL160_SR106%2C160_&refRID=0CHFMDE74NCF14EF71EM)
+   
+<br>
+   
+Trovate tutto il materiale di questa lezione [qui!](https://github.com/angeella/Psicometria_Mod_A)   
