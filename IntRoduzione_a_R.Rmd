@@ -22,7 +22,7 @@ knitr::opts_chunk$set(echo = F)
 
 ## use...R!
 
- -  Quanti di voi hanno **installato** R?
+ -  Avete **installato** R?
  
  -  Quanti di voi hanno mai **usato** R o un altro linguaggio di programmazione?
  
@@ -44,14 +44,13 @@ Perch&egrave; usare R?
 
 ## use...R! 
 
-Prima di tutto.... **Aprire Rstudio**! 
-
-Abbiamo 4 finestrelle: 
+Prima di tutto.... proviamo **R**! ma **Rstudio** &egrave; pi&ugrave; semplice:
 
 <center>
-![](Images/Rstudio.JPG){ width=80% }
+![](Images/Rstudio.JPG){ width=70% }
 </center> 
-
+<br>
+`r emo::ji("boom")` **Attenzione**! R e Rstudio non sono la stessa cosa! **R** &egrave; un **linguaggio-ambiente di programmazione**, mentre **Rstudio** &egrave; un **IDE** che rende R pi&ugrave; **user-friendly**
 
 ## Pacchetti per tutti!
 
@@ -62,7 +61,7 @@ install.packages("xlsx") #Installiamo il pacchetto "xlsx"
 library(xlsx) #Dopo averlo installato lo richiamiamo 
 ```
 
-Tramite questi comandi, installiamo il pacchetto ``xlsx`` e lo richiamiamo nella nostra sessione. Questo pacchetto ci permette di caricare all'interno di R dati da Excel.
+installiamo il pacchetto ``xlsx`` e lo richiamiamo nella nostra sessione. Questo pacchetto ci permette di caricare all'interno di R dati da Excel.
 
 $\rightarrow$ per ogni cosa che volete fare esiste un pacchetto corrispondente! Se trovate questo errore in futuro:
 
@@ -70,7 +69,8 @@ $\rightarrow$ per ogni cosa che volete fare esiste un pacchetto corrispondente! 
 Error in library(dplyr) : there is no package called dplyr
 ```
 
-significa che dovete installare il pacchetto ``dplyr``. Consiglio `r emo::ji("face")`: errori/bug cercate su google o [stackoverflow](https://stackoverflow.com)!
+significa che dovete installare il pacchetto ``dplyr``. 
+`r emo::ji("face")` **Consiglio**: errori/bug cercate su google o [stackoverflow](https://stackoverflow.com)!
 
 <center>
 ![](Images/stackoverflow.png){ width=30% }
@@ -99,13 +99,13 @@ Gli operatori logici corrispondono invece ai seguenti simboli:
 <= #minore uguale
 ```
 
-Attenzione `r emo::ji("boom")`! ``=`` e ``<-`` si usano per assegnare un valore a una variabile
+`r emo::ji("boom")` **Attenzione**: I simboli ``=`` e ``<-`` si usano per assegnare un valore a una variabile
 
 ```{r, echo = T, eval = F}
 pluto = "ciao"
 ```
 
-diverso da `==`!! 
+diverso da `==` (operazione logica che definisce l'uguale)!! 
 
 ## Operazioni
 
@@ -119,7 +119,7 @@ Vediamo qualche esempio insieme
 3<20
 ```
 
-Attenzione! `r emo::ji("boom")`
+`r emo::ji("boom")` **Attenzione**:
 
 ```{r, echo = T, eval = F}
 TRUE==1
@@ -143,7 +143,7 @@ help("+") #cerchiamo aiuto per capire l'uso di +
 setwd("il_mio_path")
 ```
 
-**Vedere cosa c'&egrave nella mia working directory?**
+**Vedere cosa c'&egrave; nella mia working directory?**
 
 ```{r, echo = T, eval = F}
 ls()
@@ -160,7 +160,7 @@ rm(pluto) #cancelliamo l'oggetto pluto
 
 Come caricare i dati? dipende... `r emo::ji("face")`
 
-Per prima cosa vedete il **formato** del vostro documento (xlsx, csv, xls, txt etc), in generale, vi sar&agrave un comando corrispondente:
+Per prima cosa vedete il **formato** del vostro documento (xlsx, csv, xls, txt etc), in generale, vi sar&agrave; un comando corrispondente:
 
 ```{r, echo = T, eval = F}
 read.table("path/file_name.txt") #formato txt
@@ -168,7 +168,9 @@ read.csv("path/file_name.csv") #formato csv
 read.xlsx("path/file_name.xlsx") #formato xlsx
 ```
 
-etc.. se siete indecisi usate l'help, google,stackoverflow o [R-bloggers](https://www.r-bloggers.com/)! `r emo::ji("smile")`
+etc.. se siete indecisi usate l'``help``, google, stackoverflow o [R-bloggers](https://www.r-bloggers.com/)! `r emo::ji("smile")`
+
+oppure andate su Files $\rightarrow$ Import Datasets $\rightarrow$ ...
 
 Proviamo insieme!
 
@@ -240,7 +242,7 @@ nrow(pippo) #numero di righe di pippo?
 is.matrix(pippo) #Check che pippo sia una matrice 
 ```
 
-se non vi ricordate $\rightarrow$ `help(matrix)`! `r emo::ji("boom")` 
+`r emo::ji("boom")` Se non vi ricordate $\rightarrow$ `help(matrix)`! 
 
 ## Tipologie di oggetti (alcuni)
  
@@ -259,7 +261,7 @@ rick[10,2] #Richiamiamo l'elemento della 10 riga e 2 colonna
 rick$pluto #richiamo la variabile pluto (prima colonna)
 ```
  
-Che differenza c'&egrave tra `data.frame` e `matrix`? `r emo::ji("question")`
+`r emo::ji("question")` Che differenza c'&egrave; tra `data.frame` e `matrix`? 
 
 # Prima di continuare.. 
 
@@ -319,7 +321,7 @@ barplot(fa_h, col = rainbow(length(levels(DB$Hemisphere))))
 
 <br>Grafico a torta 
 
-```{r, echo = T, fig.align="center"}
+```{r, echo = T, out.width = '60%', fig.align="center"}
 pie(fa_h, col = rainbow(length(levels(DB$Hemisphere))))
 ```
 
@@ -361,14 +363,28 @@ median(DB$HappinessScore)
 ### Grafici
 
 <br>Istogramma
-```{r, echo = T, eval = F}
-hist(DB$HappinessScore, main = "Happiness Score", col = "lightblue")
-hist(DB$HappinessScore, breaks = 20, col = "lightblue") #con breaks decidi gli intervalli!
+```{r, echo = T, fig.align="center", out.width = '60%'}
+hist(DB$HappinessScore, breaks = 20, col = "lightblue", main = "Happiness Score") #breaks decide gli intervalli!
 ```
 
-Boxplot
+## Variabili quantitative 
+### Grafici
 
-```{r, echo = T, eval = F}
+<br>`r emo::ji("boom")` **Attenzione** agli intervalli! 
+```{r, echo = T, fig.align="center", out.width = '60%'}
+hist_plot <-hist(0:4)
+hist_plot
+```
+
+**R** automaticamente chiude il primo intervallo a sinistra, in questo modo raggruppa sempre lo 0 e l'1 in dati di conteggio. L'ampiezza del primo intervallo sar&agrave;  quindi doppia rispetto le altre (``density``)
+
+
+## Variabili quantitative 
+### Grafici
+
+<br>Boxplot
+
+```{r, echo = T, fig.align="center", out.width = '60%'}
 boxplot(DB$HappinessScore,col = "lightblue")
 ```
 
