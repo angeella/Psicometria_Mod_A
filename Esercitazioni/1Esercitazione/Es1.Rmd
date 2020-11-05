@@ -1,0 +1,356 @@
+---
+title: 'Esercitazione 1: Frequenze, indici di posizione e amici'
+author: "Angela Andreella"
+date: "20/10/2020"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
+```
+
+
+## Variabile Qualitativa
+
+Si rileva il tipo di diploma di scuola secondaria di $12$ studenti del vostro dipartimento. Identifichiamo con C = classico, S = scientifico, T = tecnico, A = altro.
+
+$$
+X = (C, T, C, C, T, A , A, T, S, S , T, A)
+$$
+
+1. Identificare la popolazione, l'unita statistica, variabile rilevata, tipo di variabile rilevata e modalitá della variabile.
+
+Popolazione = tutti gli studenti del vostro dipartimento
+
+Unitá statistica = lo studente
+
+Variabile Rilevata = Diploma di scuola secondaria
+
+Tipo di variabile = Qualitativa nominale, ovvero non ordinabile
+
+Modalit${\`a}$ = C, S, T, A
+
+2. Calcolare la tabella di frequenza assoluta e relativa
+
+```{r, echo = F}
+X = c("C", "T", "C", "C", "T", "A" , "A", "T", "S", "S" , "T", "A")
+fa <- table(X)
+fa_fr <- rbind(fa, round(fa/length(X),3))
+fa_fr <- addmargins(fa_fr,margin = 2)
+fa_fr <- t(fa_fr)
+#rownames(fa_fr) <- "K"
+tab <- knitr::kable(fa_fr,col.names = c("$f_i$", "$p_i$"))
+```
+
+Richiamiamo un po' di formule:
+
+La nostra variabile osservata ${\`e}$ $X$, per calcolare le frequenze assolute che indichiamo con $f_i$ basta semplicemente contare quante volte si presenta ciascuna modalit${\`a}$. 
+
+Per le frequenze relative invece utilizziamo la seguente formula: 
+
+$$
+p_i = \dfrac{f_i}{n}
+$$
+dove $n$ ${\`e}$ il numero totale di osservazioni, nel nostro caso $12$.
+\begin{center}
+\begin{tabular}{l|rr}
+\hline
+  & $f_i$ & $p_i$\\
+\hline
+A & $3$ & $3/12 = 0.250$\\
+C & $3$ & $3/12 = 0.250$\\
+S & $2$ & $2/12 = 0.167$\\
+T & $4$ & $1/12 = 0.333$\\
+Totale & $12$ & $1$\\
+\hline
+\end{tabular}
+\end{center}
+
+**NB**: Controllate sempre che
+
+ - La somma delle frequenze assolute sia uguale a $n$, ovvero:
+ $\sum_{i = 1}^{k} f_i = n$ nel nostro caso $\sum_{i = 1}^{4} f_i = 12$;
+ - La somma delle frequenze relative sia uguale a $1$, ovvero:
+ $\sum_{i = 1}^{k} p_i = 1$ nel nostro caso $\sum_{i = 1}^{4} p_i = 1$;
+
+Con $k$ (nelle formule dei due punti precedenti) indichiamo le modalit${\`a}$, in questo caso il totale delle modalit${\`a}$ ${\`e}$ pari a $4$.
+
+3. Creare il grafico a barre
+
+Semplicemente dobbiamo riportare sull'asse delle x le nostre modalit${\`a}$ e sull'asse delle y le nostre frequenze assolute $f_i$ o relative $p_i$:
+
+```{r, echo = F}
+X = c("C", "T", "C", "C", "T", "A" , "A", "T", "S", "S" , "T", "A")
+fa <- table(X)
+barplot(fa, col = rainbow(4), title = "Diploma di scuola secondaria")
+```
+
+4. Calcolare la Moda
+
+La moda, che indichiamo con $Mo$, ${\`e}$ la modalit${\`a}$ dove troviamo la frequenza assoluta o relativa maggiore. Si pu${\`o}$ vedere chiaramente dal grafico a barre del punto 3. o utilizzando la tabella creata nel punto $2$. La moda in questo caso ${\`e}$ $T$, avendo frequenza assoluta pari a $4$.
+
+
+## Variabile Quantitativa
+
+Si rileva la durata in secondi di $10$ brani musicali di musica heavy metal:
+
+$$
+X = (180;300;250;60;250;60;60;270;300;270)
+$$
+
+1. Identificare la popolazione, l'unita statistica, variabile rilevata, tipo di variabile rilevata e modalitá della variabile.
+
+Popolazione = tutti i brani heavy metal
+
+Unitá statistica = il brano musicale
+
+Variabile Rilevata = durata del brano in secondi
+
+Tipo di variabile = Quantitativa a scala a rapporti equivalenti, poich${\`e}$ se il brano ha durata $0$ significa che non vi ${\`e}$ un brano
+
+Modalit${\`a}$ = $60$, $180$, $250$, $270$ e $300$. In questo caso l'esercizio ${\`e}$ parecchio semplificato avendo solo $10$ osservazioni, nel caso avessimo pi${\`u}$ osservazioni sarebbe carino raggruppare le osservazioni in classi per esempio considerando i minuti, ovvero da $0$ a $60$, da $60$ a $120$ etc. 
+
+2. Calcolare la tabella di frequenza assoluta e relativa e rispettive cumulate
+
+Per le frequenze assolute e relative riguardate le formule dell'esercizio precedente :) 
+
+Le frequenze cumulate assolute della modalit${\`a}$ $i$ si calcolano sommando le frequenze assolute riferite a $i$ e prima di $i$, ovvero:
+
+$$
+F_i = \sum_{j = 1}^{i} f_j
+$$
+uguale per le frequenze cumulate relative, dobbiamo sommare le frequenze relative fino a $i$:
+
+$$
+P_i = \sum_{j = 1}^{i} p_j
+$$
+
+```{r, echo = F}
+X = c(180,300,250,60,250,60,60,270,300,270)
+fa <- table(X)
+fa_fr <- rbind(fa, round(fa/length(X),3), cumsum(fa), cumsum(round(fa/length(X),3)))
+fa_fr <- addmargins(fa_fr,margin = 2)
+fa_fr <- t(fa_fr)
+fa_fr[6,] <- c(length(X),1, "", "")
+#rownames(fa_fr) <- "K"
+tab <- knitr::kable(fa_fr,col.names = c("$f_i$", "$p_i$", "$F_i$", "$P_i$"))
+tab
+```
+
+**NB**: Controllate sempre che
+
+  - $F_i$ dell'ultima modalit${\`a}$ sia uguale a $n$, nel nostro caso $F_5 = 10$;
+  - $P_i$ dell'ultima modalit${\`a}$ sia uguale a $1$, nel nostro caso $P_5 = 1$;
+
+Qualche esempio per capire gli indici e la formula delle frequenze cumulate:
+
+  - $F_1 = \sum_{j = 1}^{1} f_j = f_1 = 3$;
+  - $F_2 = \sum_{j = 1}^{2} f_j = f_1 + f_2 = 3 + 1 = 4$;
+  - $F_3 = \sum_{j = 1}^{3} f_j = f_1 + f_2 + f_3 = 3 + 1  + 2= 6$;
+  - $F_4 = \sum_{j = 1}^{4} f_j = f_1 + f_2 + f_3 + f_4 = 3 + 1  + 2 + 2= 8$;
+  - $F_5 = \sum_{j = 1}^{5} f_j = f_1 + f_2 + f_3 + f_4 + f_5= 3 + 1  + 2 + 2+ 2=  10$;
+
+uguale per le frequenze cumulate relative ma considerando $p_i$ invece di $f_i$.
+
+4. Calcolare la Media
+
+Ok, qui abbiamo due possibilit${\`a}$:
+
+  1. Utilizzare i dati grezzi: $X = (180;300;250;60;250;60;60;270;300;270)$, la media sar${\`a}$ uguale a:
+
+$$
+\bar{X} = \dfrac{\sum_{i = 1}^{n} X_i}{n} = \dfrac{\sum_{i = 1}^{10} X_i}{10} = \dfrac{180+300+250+60+250+60+60+270+300+270}{10} = 200
+$$
+  2. Utilizzare la tabella di frequenze che abbiamo appena calcolato. Se utilizziamo le frequenze assolute, la formula della media sar${\`a}$ uguale a:
+  
+$$
+\bar{X} = \dfrac{\sum_{i = 1}^{k} X_i f_i}{n} = \dfrac{\sum_{i = 1}^{5} X_i f_i}{10} = \dfrac{(60 \cdot 3) + (180 \cdot 1) + (250 \cdot 2) + (270 \cdot 2) + (300 \cdot 2)}{10} = 200
+$$  
+se usiamo le frequenze relative, la formula della media sar${\`a}$ uguale a:
+
+$$
+\bar{X} = \sum_{i = 1}^{k} X_i p_i = \sum_{i = 1}^{5} X_i p_i = (60 \cdot 0.3) + (180 \cdot 0.1) + (250 \cdot 0.2) + (270 \cdot 0.2) + (300 \cdot 0.2) = 200
+$$  
+Deve dare sempre lo stesso risultato ovviamente :) le formule sono equivalenti, la prima se abbiamo molte osservazioni non solo $10$ ${\`e}$ pi${\`u}$ antipatica.
+
+5. Calcolare la mediana e i quartili
+
+Anche qui ci sono diversi metodi, usate quello che pi${\`u}$ vi piace, ancora una volta comunque il risultato deve essere sempre lo stesso! Quindi potete provare con diversi metodi per poter fare un check sui vostri calcoli :)
+
+  1. Utilizzando i dati grezzi: $X = (180;300;250;60;250;60;60;270;300;270)$.
+     Per prima cosa dobbiamo ordinarli, poich${\`e}$ la mediana si riferisce a un dato
+     ordinato.
+     $60$ $60$ $60$ $180$ $250$ $250$ $270$ $270$ $300$ $300$
+     
+     Dobbiamo trovare la modalit${\`a}$ che sta in "mezzo". Avendo $n = 10$ osservazioni, l'indice che sta in mezzo ${\`e}$ tra $5$ e $6$. Che fortuna! le modalit${\`a}$ in posizione $5$ e $6$ ${\`e}$ la stessa, ovvero $250$. Se invece avessimo avuto due diverse modalit${\`a}$ per esempio $250$ e $270$ potevamo prendere come mediana il valore intermedio tra questi due valori (interpolazione lineare), ovvero $(250+270)/2$. 
+     
+  2. Utilizzando le frequenze cumulate assolute: sappiamo da prima che la modalit${\`a}$ mediana ${\`e}$ tra la posizione $5$ e $6$. Possiamo dunque analizzare le frequenze cumulate assolute e vedere dove si trovano il $5$ e il $6$, nel nostro caso sono inglobati in $F_3 = 6$, ovvero la mediana ${\`e}$ magicamente ancora $250$!;
+  
+  3. Utilizzando le frequenze relative: sappiamo che la mediana ${\`e}$ ci indica la modalit${\`a}$ che spacca a met${\`a}$ la nostra distribuzione di frequenza, ovvero che raccoglie il $50\%$ delle osservazioni. Possiamo dunque utilizzare le frequenze cumulate relative, vedendo dove si trova lo $0.5$, ci riferiamo dunque a $P_3 = 0.6$, ovvero la mediana ${\`e}$ ancora $250$.
+  
+La mediana ${\`e}$ semplicemente il secondo quartile, ovvero $Me = Q_2$, dunque possiamo usare i metodi precedenti per calcolare il primo quartile che chiamiamo $Q_1$, e il terzo quartile che chiamiamo $Q_3$. Il primo quartile raccoglie il primo $25\%$ della nostra distribuzione, mentre il terzo il $75\%$.
+
+Anche qui abbiamo tre metodi:
+
+  1. Utilizzando i dati grezzi ordinati come per il punto 1 della mediana. Sappiamo che il quartile racchiude il $25\%$ della nostra distribuzione, dunque se moltiplichiamo $0.25$ per il numero totale di osservazioni $n = 10$ abbiamo la posizione del primo quartile, ovvero $2.5$, cio${\`e}$ tra $2$ e $3$, che nel nostro caso ${\`e}$ $60$!. Se avessimo avuto due valori diversi, conviene arrotondare $2.5$ al numero intero superiore, ovvero $3$ e prendere l'osservazione che sta alla terza posizione;
+  
+  2. Utilizzando le frequenze cumulate assolute: Come prima sappiamo che il nostro $Q_1$ ${\`e}$ in posizione $2.5$. Analizzando la colonna $F_i$ vediamo che $2.5$ ${\`e}$ contenuto nella prima riga! Quindi ancora una volta il primo quartile ${\`e}$ pari a $60$;
+  
+  3. Utilizzando le frequenze cumulate relative: Sappiamo che $Q_1$ tiene il $25\%$ della distribuzione. Dunque, dove ${\`e}$ il $25\%$? Se guardiamo la la colonna $P_i$ vediamo che $0.25$ ${\`e}$ contenuto ancora nella prima riga! Quindi ancora una volta il primo quartile ${\`e}$ pari a $60$ (e per fortuna!);
+
+Facciamo lo stesso procedimento per il terzo quartile, ovvero considerando $0.75$ invece di $0.25$, se avete problemi scrivetemi :) (Soluzione: $Q_3 = 270$)
+
+6. Calcolare il campo di variazione, lo scarto interquartile
+
+Il campo di variazione ${\`e}$ semplicemente la differenza tra massima modalit${\`a}$ e minima modalit${\`a}$, ci indica dunque appunto in quale campo prende valori la nostra variabile. In questo caso:
+
+$$
+CV = X_{max} - X_{min} = 300 - 60 = 240
+$$
+e lo scarto interquartile la differenza tra terzo e primo quartile:
+
+$$
+Q = Q_3 - Q_1 = 270 - 60 = 210
+$$
+7. Calcolo della varianza, deviazione standard e coefficiente di variazione
+
+Anche qui, come per la media, abbiamo vari metodi (sempre tutti equivalenti) per calcolare la varianza. Ricordiamo che la media $\bar{X}$ ${\`e}$ pari a $200$.
+
+ 1. Utilizzando i dati grezzi: $X = (180;300;250;60;250;60;60;270;300;270)$, dunque:
+ 
+ \begin{align*}
+ S^2 &= \dfrac{\sum_{i = 1}^{n} (X_i - \bar{X})^2}{n}= \dfrac{\sum_{i = 1}^{10} (X_i - 200)^2}{10} = \\
+ &= \dfrac{(180 - 200)^2 + (300 - 200)^2 + (250 - 200)^2 + (60 - 200)^2 + (250 - 200)^2 +  }{ \quad}\\ 
+ & \dfrac{(60 - 200)^2 +(60 - 200)^2 +(270 - 200)^2 +(300 - 200)^2 +(270 - 200)^2}{10} = 9400
+\end{align*}
+ 
+ 2. Utilizzando le frequenze assolute:
+ 
+\begin{align*}
+ S^2 &= \dfrac{\sum_{i = 1}^{k} (X_i - \bar{X})^2 f_i}{n} = \dfrac{\sum_{i = 1}^{5} (X_i - \bar{X})^2 f_i}{10} \\
+ &= \dfrac{((60 - 200)^2 \cdot 3 ) + ((180 - 200)^2 \cdot 1 ) + ((250 - 200)^2 \cdot 2 ) + ((270 - 200)^2 \cdot 2 ) + ((300 - 200)^2 \cdot 2 )}{10}= 9400
+ \end{align*}
+ 
+ 3. Utilizzando le frequenze relative
+
+\begin{align*}
+ S^2 &= \sum_{i = 1}^{k} (X_i - \bar{X})^2 p_i = \sum_{i = 1}^{5} (X_i - \bar{X})^2 p_i \\
+ &= ((60 - 200)^2 \cdot 0.3 ) + ((180 - 200)^2 \cdot 0.1 ) + ((250 - 200)^2 \cdot 0.2 ) + ((270 - 200)^2 \cdot 0.2 ) + ((300 - 200)^2 \cdot 0.2 ) = 9400
+\end{align*}
+
+La deviazione standard non ${\`e}$ altro che la radice quadrata della varianza, ovvero $S = \sqrt{S^2} = 96.9536$. Il coefficiente di variazione invece ${\`e}$ pari a $CV = \dfrac{S}{| \bar{X}| } = \dfrac{96.9536}{200} = 0.484768$.
+
+## Esercizi sparsi su frequenze e media
+
+ 1. Avendo tre osservazioni ma conosciamo solo il valore di due, pari a $80$ e $70$, e il valore della media pari a $70$. Quanto sar${\`a}$ la terza osservazione? 
+ 
+ $$
+ \bar{X} = \dfrac{X_1 + X_2 + X_3}{n}  \quad \quad 70 = \dfrac{80 + 70 + X_3}{3} \rightarrow X_3 = (70\cdot3) - (80 - 70)  = 60
+ $$
+
+  2. Avendo $3$ osservazioni e conoscendo le seguenti frequenze relative: $p_1 = 0.3$, $p_2 = 0.4$,  quanto sar${\`a}$ la terza?
+  
+  $$
+  \sum_{i = 1}^{3} p_i = 1 \quad \quad 0.3 + 0.4 + p_3 = 1 \rightarrow p_3 = 1 - 0.3 -0.4 = 0.3 
+  $$
+
+  3. Avendo $n = 10$ e le seguenti frequenze assolute: $f_1 = 3$, $f_2 = 1$, $f_3 = 4$, quanto sar${\`a}$ $f_4$?
+  
+  $$
+  \sum_{i = 1}^{4} f_i = 10 \quad \quad 3 + 1 + 4 + f_4 = 10 \rightarrow f_4 = 10 - (3 + 1 + 4) = 2
+  $$
+  
+  4. Avendo $X_1 = 2$, $f_1 = 1$, $X_2 = 5$, $f_2 = 2$, $X_3 = 10$, e la media uguale a $7$, quanto ${\`e}$ $f_3$?
+  
+$$
+\bar{X} = \dfrac{\sum_{i = 1}^{3} X_i f_i}{n} \quad 7 = \dfrac{(2\cdot 1)  + (5\cdot 2) + (10\cdot f_3)}{1 + 2 + f_3} \rightarrow f_3 = 3
+$$
+  5. Si consideri una rilevazione di $10$ osservazione su una variabile che assume i seguenti valori 
+  
+```{r, echo = F}
+X <- c(1, 3, 4, 5)
+fX <- c(0.4, 0.3, 0.1, 0.2)
+
+dd <- data.frame(X = X, fX = fX)
+knitr::kable(dd, col.names = c("X", "$p_i$"))
+```
+  Calcolare $F_{2}$, media aritmetica, mediana e varianza.
+  
+  $F_{2}$ si riferisce alla frequenza assoluta della seconda modalit${\`a}$, dunque per prima cosa dobbiamo calcolare la tabella delle frequenze assolute. Sapendo che 
+  
+  $$
+  p_i = f_i / n
+  $$
+ che nel nostro caso significa $p_i = f_i/10$, ovvero $f_i = p_i \cdot 10$. La tabella delle frequenze assolute e frequenze assolute cumulate ${\`e}$ pari a:
+  
+```{r, echo = F}
+X <- c(1, 3, 4, 5)
+pX <- c(0.4, 0.3, 0.1, 0.2)
+fX <- sapply(c(1:4), function(x) pX[x] * 10)
+Fx <- c(4, 7, 8, 10)
+
+dd <- data.frame(X = X, pX = pX, fX = fX, Fx = Fx)
+colnames(dd) <- c("X", "$p_i$", "$f_i$", "$F_i$")
+knitr::kable(dd, col.names = c("X", "$p_i$", "$f_i$", "$F_i$"))
+``` 
+  
+Dunque $F_{2}$ ${\`e}$ uguale a $7$.
+
+La media aritmetica ${\`e}$ uguale a:
+
+$$
+\bar{X} = \sum_{i= 1}^{4} X_i p_i = ( 1 \cdot 0.4 + 3 \cdot 0.3 + 4 \cdot 0.1 + 5 \cdot 0.2) = 2.7
+$$
+o potete usare le formule spiegate sopra con le frequenze assolute.
+
+La mediana avendo $10$ osservazioni ${\`e}$ tra le posizioni $5$ e $6$, ovvero la modalit${\`a}$ $3$. Provate a usare gli altri metodi spiegati sopra :)
+
+La varianza ${\`e} pari a 
+
+$$
+S_{X}^2 = \sum_{i = 1}^{4} (X_i - 2.7)^2 p_i = (1 - 2.7)^2 \cdot 0.4 + (3 - 2.7)^2 \cdot 0.3 + (4 - 2.7)^2 \cdot 0.1 + (5 - 2.7)^2 \cdot 0.2 = 2.975
+$$
+  6. Avendo la variabile $X$ rilevata che assume i valori $2, 3, 4, 5, 6, 8$ e $16$ con $F_{1} = 5$, $F_{2} = 9$, $F_{3} = 12$, $F_{4} = 17$, $F_{5} = 20$, $F_{6} = 22$, $F_{7} = 25$. Dire qual ${\`e}$ la frequenza assoluta della modalit${\`a}$ $8$.
+  
+  Sappiamo che $F_{i}$ indica la frequeza cumulata assoluta della modalit${\`a}$ $i$, dunque dobbiamo cercare $f_6$. Sapendo che:
+  
+  $$
+  F_{6} = f_1 + f_2 + f_3 + f_4 + f_5 + f_6
+  $$
+  e
+  
+  $$
+  F_{5} = f_1 + f_2 + f_3 + f_4 + f_5
+  $$
+  possiamo semplicemente trovare $f_6$ sottraendo $F_5$ da $F_6$:
+  
+  $$
+  f_6 = F_6 - F_5 = f_1 + f_2 + f_3 + f_4 + f_5 + f_6 - f_1 + f_2 + f_3 + f_4 + f_5 = 2
+  $$
+ 
+ 7. Avendo $X = \{1, 2, 2, 2, 2, 3, 4, 5, 6, 6, 7, 7, 7, 8, 8, 9, 9, 9, 10, 11, 11, 15\}$, calcolare i quartili.
+ 
+ Anche qui come prima possiamo fare la tabella delle frequenze assolute/relativa o usare i dati grezzi. In questo caso useremo i dati grezzi ma voi provate tutte le varie alternative :) 
+ 
+ Il primo quartile ${\`e}$ in posizione $n \cdot 0.25 = 22 \cdot 0.25 = 5.5$, arrotondando al numero intero superiore, cerchiamo la modalit${\`a}$ in posizione $6$, ovvero $3$
+ 
+ Il secondo quartile, ovvero la mediana, ${\`e}$ tra la posizione  $n/2 = 11$ e $(n)/2 + 1 = 12$, avendo la stessa modalit${\`a}$ nelle posizioni $11$ e $12$, la mediana ${\`e}$ $7$.
+ 
+ Il terzo quartile ${\`e}$ in posizione $n \cdot 0.75 = 22 \cdot 0.75 = 16.5$,  arrotondando al numero intero superiore, cerchiamo la modalit${\`a}$ in posizione $17$, ovvero $9$.
+ 
+ 8. Avendo $X = \{1, 50, 55, 60, 65 \}$ calcolare la media e la mediana, e commentare.
+ 
+ La media ${\`e}$ semplicemente 
+ 
+ $$
+ \bar{X} = \frac{1 + 50 + 55 + 60 + 65}{5} = 46.2
+ $$
+ La mediana invece ${\`e}$ in posizione $(n + 1)/2 = 6/2 = 3$, ovvero ${\`e}$ pari a $55$.
+ 
+ Notiamo che la mediana ${\`e}$ un indice robusto verso possibili outliers, difatti la media ${\`e}$ influenzata parecchio da quell'$1$, mentre la mediana no.
+ 
+ 
+ 

@@ -1,0 +1,722 @@
+---
+title: 'Esercitazione 4: Bernoulli, Binomiale e Normale'
+author: "Angela Andreella"
+date: "03/11/2020"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align = "center", fig.width = 5, fig.height = 3.5)
+```
+
+# Esercizio 1: Distribuzione Binomiale
+
+Prendiamo l'esercizio a pag.208. Sia una $X$ una variabile aleatoria binomiale con parametri $n = 5$ e $\theta = 0.25$.
+
+  1. Scrivere la distribuzione di probabilit${\`a}$
+  2. Rappresentare questa distribuzione di probabilit${\`a}$ graficamente
+  3. Calcolare media e varianza
+  4. Qual ${\`e}$ la probabilit${\`a}$ di vedere 3 o meno successi?
+  5. Qual ${\`e}$ la probabilit${\`a}$ di vedere pi${\`u}$ di 3 successi?
+  6. Calcolare la distribuzione cumulata
+
+
+## Soluzione
+
+  1. Per prima cosa descriviamo la distribuzione binomiale. Questa distribuzione descrive la probabilit${\`a}$ di una serie di success in $n$ prove indipendenti. Con $\theta$ indichiamo la probabilit${\`a}$ di successo, e con $n$ appunto il numero totale di prove. La distribuzione di probabilit${\`a}$ ${\`e}$ la seguente:
+  
+  $$
+  \Pr(X = x) = {n\choose x} \cdot \theta^x \cdot (1- \theta)^{n-x} = {5\choose x} \cdot 0.25^x \cdot (1- 0.25)^{5-x}
+  $$
+  
+Sappiamo anche che $E(X) = n \theta$ e $Var(X) = n \theta (1 - \theta)$.
+  
+Poich${\`e}$ $n = 5$, ovvero abbiamo $5$ prove, il numero di successi pu${\`o}$ essere $0$, $1$, $2$, $3$, $4$ o $5$. Quindi la distribuzione completa di probabilit${\`a}$ ${\`e}$:
+
+$$
+\Pr(X = x) = {5\choose x} \cdot 0.25^x \cdot (1- 0.25)^{5-x} = \begin{cases}
+{5\choose 0} \cdot 0.25^0 \cdot (1- 0.25)^{5-0} = 0.2373046875 & \text{if } x = 0\\
+{5\choose 1} \cdot 0.25^1 \cdot (1- 0.25)^{5-1} = 0.3955078125 & \text{if } x = 1\\
+{5\choose 2} \cdot 0.25^2 \cdot (1- 0.25)^{5-2} = 0.2636718750 & \text{if } x = 2\\
+{5\choose 3} \cdot 0.25^3 \cdot (1- 0.25)^{5-3} = 0.0878906250 & \text{if } x = 3\\
+{5\choose 4} \cdot 0.25^4 \cdot (1- 0.25)^{5-4} = 0.0146484375 & \text{if } x = 4\\
+{5\choose 5} \cdot 0.25^5 \cdot (1- 0.25)^{5-5} = 0.0009765625 & \text{if } x = 5\\
+\end{cases}
+$$
+
+N.B= Controllate sempre che la somma sia $1$! Ovvero $\sum_{x \in \{0, \dots,5\}} \Pr(X = x) = \Pr(X = 0) +\Pr(X = 1) + \Pr(X= 2) + \Pr(X= 3) + \Pr(X= 4) + \Pr(X= 5) = 1$.
+
+In R ${\`e}$ molto semplice:
+
+```{r}
+dbinom(0:5,size = 5,prob = 0.25)
+```
+
+ 2. Per rappresentare questa distribuzione di probabilit${\`a}$ graficamente possiamo utilizzare il barplot
+ 
+```{r}
+plot(0:5, dbinom(0:5, size=5, prob=.25),type='h', 
+     col = "red", ylab = "Pr", xlab = "", ylim = c(0,1),lwd=3)
+```
+
+oppure il grafico delle probabilit${\`a}$ cumulate
+
+```{r}
+plot.stepfun(cumsum(dbinom(0:5, size=5, prob=.25)), 
+             ylab = "Pr cumulate", xlab = "", main = "", col = "red", lwd = 3)
+```
+
+ 3. La media ${\`e}$ semplicemente $E(X) = n \theta = 5 \cdot 0.25 = 1.25$, la varianza invece $Var(X) = n  \theta  (1-\theta) = 5 \cdot 0.25 \cdot (1 - 0.25)  = 0.9375$
+ 
+ 4. La probabilit${\`a}$ di avere 3 o meno successi si descrive con:
+ 
+ \begin{align*}
+ \Pr(X \le 3) &= \Pr(X = 0) + \Pr(X = 1) + \Pr(X = 2) + \Pr(X = 3)  \\
+ &=0.2373046875 +0.3955078125 + 0.2636718750 + 0.0878906250 =  0.984375
+ \end{align*} 
+ In R:
+ 
+```{r}
+pbinom(3, size = 5, prob = 0.25)
+```
+ 
+ 5. La probabilit${\`a}$ di avere pi${\`u}$ di 3 si descrive con:
+ 
+ \begin{align*}
+ \Pr(X > 3) &= \Pr(X = 4) + \Pr(X = 5) \\
+ &= 0.0146484375 +0.0009765625 = 0.015625
+ \end{align*} 
+ in R:
+ 
+```{r}
+pbinom(3, size = 5, prob = 0.25, lower.tail = FALSE)
+```
+ 
+ oppure possiamo calcolarlo usando il risultato del punto precedente:
+ 
+ \begin{align*}
+ \Pr(X > 3) &= 1 - \Pr(X \ge 3) = 1 - \Pr(X = 0) + \Pr(X = 1) + \Pr(X = 2) + \Pr(X = 3) \\
+ &= 1- 0.2373046875 +0.3955078125 + 0.2636718750 + 0.0878906250 \\
+ &=  1- 0.984375 = 0.015625
+ \end{align*}
+
+ in R:
+ 
+```{r}
+1-pbinom(3, size = 5, prob = 0.25)
+```
+
+6. Ricordiamo la formula della distribuzione cumulata:
+
+$$
+F(x) = \Pr(X \le x) = \sum_{i = 0}^{5} \Pr(X = i)
+$$
+
+dunque:
+
+\begin{equation*}
+F(x) = \begin{cases}
+{5\choose 0} \cdot 0.25^0 \cdot (1- 0.25)^{5-0} = 0.2373046875 & \text{if } x = 0\\
+{5\choose 0} \cdot 0.25^0 \cdot (1- 0.25)^{5-0} 
++ {5\choose 1} \cdot 0.25^1 \cdot (1- 0.25)^{5-1} = 0.6328125 & \text{if } x = 1\\
+{5\choose 0} \cdot 0.25^0 \cdot (1- 0.25)^{5-0} 
++ {5\choose 1} \cdot 0.25^1 \cdot (1- 0.25)^{5-1}&\\
++{5\choose 2} \cdot 0.25^2 \cdot (1- 0.25)^{5-2} = 0.8964844 & \text{if } x = 2\\
+{5\choose 0} \cdot 0.25^0 \cdot (1- 0.25)^{5-0} + {5\choose 1} \cdot 0.25^1 \cdot (1- 0.25)^{5-1} &\\
++{5\choose 2} \cdot 0.25^2 \cdot (1- 0.25)^{5-2} +{5\choose 3} \cdot 0.25^3 \cdot (1- 0.25)^{5-3} = 0.9843750 & \text{if } x = 3\\
+{5\choose 0} \cdot 0.25^0 \cdot (1- 0.25)^{5-0} + {5\choose 1} \cdot 0.25^1 \cdot (1- 0.25)^{5-1} &\\
++{5\choose 2} \cdot 0.25^2 \cdot (1- 0.25)^{5-2} +{5\choose 3} \cdot 0.25^3 \cdot (1- 0.25)^{5-3}&\\
++{5\choose 4} \cdot 0.25^4 \cdot (1- 0.25)^{5-4} =  0.9990234 & \text{if } x = 4\\
+{5\choose 0} \cdot 0.25^0 \cdot (1- 0.25)^{5-0} + {5\choose 1} \cdot 0.25^1 \cdot (1- 0.25)^{5-1}&\\
++{5\choose 2} \cdot 0.25^2 \cdot (1- 0.25)^{5-2} +{5\choose 3} \cdot 0.25^3 \cdot (1- 0.25)^{5-3}&\\
++{5\choose 4} \cdot 0.25^4 \cdot (1- 0.25)^{5-4}+{5\choose 5} \cdot 0.25^5 \cdot (1- 0.25)^{5-5} = 1.0000000 & \text{if } x = 5\\
+\end{cases}
+\end{equation*}
+
+In R:
+
+```{r}
+cumsum(dbinom(0:5, size=5, prob=.25))
+```
+
+
+# Esercizio 2: Distribuzione Binomiale
+
+Si supponga che il $38\%$ degli studenti di Psicologia abbia un titolo di studio linguistico. Considerando un campione casuale di $18$ studenti determinare:
+
+  1. La probabilit${\`a}$ che al massimo $4$ studenti abbiano un titolo di studio linguistico;
+  2. La probabilit${\`a}$ che abbiano un titolo di studio  linguistico un numero di studenti tra 6 e 9;
+  3. La media e la varianza della distribuzione
+
+## Soluzione
+  
+Identifichiamo con la variabile aleatoria $X = \{\text{numero di studenti con titolo di studio linguistico}\}$. Abbiamo due possibilit${\`a}$ che lo studente abbia il titolo di studio linguistico o no. Visto che abbiamo $18$ studenti, possiamo utilizzare la distribuzione binomiale per descrivere $X$, con $n = 18$ prove indipendenti (studenti del campione casuale) e $\theta = 0.38$, identificando come successo l'avere il titolo di studio linguistico.
+  
+ 1. La probabilit${\`a}$ che al massimo $4$ studenti abbiano un titolo di studio linguistico pu${\`o}$ essere descritta come $\Pr(X \le 4)$,  dunque:
+ 
+\begin{align*}
+ \Pr(X \le 4) &= \Pr(X = 0) + \Pr(X = 1) + \Pr(X = 2) + \Pr(X = 3) + \Pr(X = 4) \\
+ &= {18\choose 0} \cdot 0.38^0 \cdot (1- 0.38)^{18-0} \\
+&+ {18\choose 1} \cdot 0.38^1 \cdot (1- 0.38)^{18-1} \\
+&+ {18\choose 2} \cdot 0.38^2 \cdot (1- 0.38)^{18-2} \\
+&+ {18\choose 3} \cdot 0.38^3 \cdot (1- 0.38)^{18-3} \\
+&+ {18\choose 4} \cdot 0.38^4 \cdot (1- 0.38)^{18-4} \\
+&= 0.00018 + 0.00202 + 0.01053 + 0.03443 + 0.07913 \\
+&= 0.12629
+\end{align*}
+
+In R:
+
+```{r}
+pbinom(4, size = 18, prob = 0.38)
+```
+
+
+ 2. La probabilit${\`a}$ che abbiano un titolo di studio  linguistico un numero di studenti tra 6 e 9 pu${\`o}$ essere scritta come $\Pr(6 \le X \le 9)$, dunque:
+ 
+\begin{align*}
+\Pr(6 \le X \le 9) &= \Pr(X = 6) + \Pr(X = 7) + \Pr(X = 8) + \Pr(X = 9) = \\
+ &= {18\choose 6} \cdot 0.38^6 \cdot (1- 0.38)^{18-6} \\
+&+ {18\choose 7} \cdot 0.38^7 \cdot (1- 0.38)^{18-7} \\
+&+ {18\choose 8} \cdot 0.38^8 \cdot (1- 0.38)^{18-8} \\
+&+ {18\choose 9} \cdot 0.38^9 \cdot (1- 0.38)^{18-9} \\
+&= 0.18033 + 0.18947 + 0.15968 + 0.10874 = 0.63822
+\end{align*}
+
+In R:
+
+```{r}
+pbinom(9, size = 18, prob = 0.38) - pbinom(5, size = 18, prob = 0.38)
+```
+
+oppure
+
+```{r}
+dbinom(9, size = 18, prob = 0.38) + dbinom(8, size = 18, prob = 0.38) 
++ dbinom(7, size = 18, prob = 0.38) + dbinom(6, size = 18, prob = 0.38)
+```
+
+
+ 3. La media ${\`e}$ uguale a $E(X) = n \theta = 18 \cdot 0.38 = 6.84$, e la varianza $Var(X) = n \theta (1-\theta) = 18 \cdot 0.38 \cdot (1 - 0.38) = 4.2408$.
+
+In R:
+
+```{r}
+n = 18
+theta = 0.38
+media = n* theta
+varianza = n * theta * (1-theta)
+print(c(media, varianza))
+```
+
+# Esercizio 3: Distribuzione Binomiale
+
+La probabilit${\`a}$ che una persona sia soddisfatta di un certo prodotto acquistato ${\`e}$ pari a $0.9$. Si intervistano a caso $3$ persone e si chiede loro cosa ne pensano del prodotto acquistato.
+
+Calcolare la probabilit${\`a}$ che:
+ 1. Nessuno sia soddisfatto;
+ 2. Tutte e tre le persone siano soddisfatte;
+ 3. In media quante persone sono soddisfatte?
+
+## Soluzione
+
+Possiamo notare che la variabile aleatoria $X = \{\text{numero di persone soddisfatte}\}$ pu${\`o}$ essere descritta tramite una distribuzione binomiale, dove il successo ${\`e}$ l'evento persona soddisfatta, il numero totale di prove ${\`e}$ $n=3$, e la probabilit${\`a}$ di successo ${\`e}$ pari a $\theta = 0.9$.
+
+ 1. Dunque, la probabilit${\`a}$ che nessuno sia soddisfatto ${\`e}$ pari a $\Pr(X=0)$:
+
+\begin{align*}
+\Pr(X=0) = {3\choose 0} \cdot 0.9^0 \cdot (1- 0.9)^{3-0} = 0.001
+\end{align*}
+
+In R:
+
+```{r}
+dbinom(0, size = 3, prob = 0.9)
+```
+
+ 2. La probabilit${\`a}$ che tutti e tre siano soddisfatti invece ${\`e}$ pari a $\Pr(X=3)$:
+
+\begin{align*}
+\Pr(X=3) = {3\choose 3} \cdot 0.9^3 \cdot (1- 0.9)^{3-3} = 0.729
+\end{align*} 
+
+In R:
+
+```{r}
+dbinom(3, size = 3, prob = 0.9)
+```
+ 
+ 3. Per sapere in media quante persone sono soddisfatte calcoliamo la media :) ovvero:
+ 
+ \begin{align*}
+ E(X) = n \cdot \theta = 3 \cdot 0.9 = 2.7
+ \end{align*}
+
+In R:
+
+```{r}
+n = 3
+theta = 0.9
+n* theta
+```
+
+# Esercizio 4: Standardizzazione
+
+Si conoscono due dati di una distribuzione: $x_1 = 130$ e $x_2 = 138$, e i rispettivi punti Z $Z_1 = -0.9375$, $Z_2 = 0.3125$. Calcolare la media e la varianza della distribuzione.
+
+## Soluzione
+
+Per prima cosa facciamo un piccolo ripasso dei punti $Z$. I punti $Z$ vengono calcolati in modo da avere una variabile con media $0$ e varianza $1$:
+
+$$
+Z = \frac{X - \mu}{\sigma}
+$$
+dove $\mu$ ${\`e}$ la media della popolazione, e $\sigma$ la deviazione standard. Il punto Z indica quante deviazioni standard ci sono fra un determinato valore $X$ e la media. Inoltre valori negativi indicano punteggi $X$ inferiori alla media e valori positivi, punteggi sopra la media. Grazie ai punti $Z$ possiamo confrontare fra loro punteggi $X$ provenienti da distribuzioni di frequenza diverse.
+
+Torniamo all'esercizio. Per calcolare la media e la varianza, usiamo la formula del punto $Z$:
+
+\begin{align*}
+Z_1 &= \frac{130 - \mu}{\sigma} = -0.9375 \\
+Z_2 &= \frac{138 - \mu}{\sigma} = 0.3125 \\
+\end{align*}
+dunque
+\begin{align*}
+&130 + 0.9375\sigma = \mu \\
+&138 = 0.3125\sigma + 130 + 0.9375\sigma \rightarrow \sigma = \frac{8}{(0.3125 + 0.9375)} = 6.4 \\
+\end{align*}
+
+Abbiamo $\sigma = 6.4$, dunque la varianza  ${\`e}$ pari a $\sigma^2 = 6.4^2 = 40.96$, e la media $\mu = 130 + 0.9375\sigma = 130 + 0.9375 \cdot 6.4 = 136$.
+
+# Esercizio 5: Standardizzazione
+
+Avendo una distribuzione di dati con media $\mu = 235$ e deviazione standard $\sigma = 49.5$, calcolare i punti $Z$ dei seguenti valori e commentarli:
+
+  1. $x_1 = 385$;
+  2. $x_2 = 254$;
+  3. $x_3 = 198$;
+  4. $x_4 = 334$.
+  
+## Soluzione
+
+Utilizziamo di nuovo la formula per calcolare i punti $Z$:
+
+\begin{align*}
+Z_1 &= \frac{385 - 235}{49.5} = 3.03 \\
+Z_2 &= \frac{254 - 235}{49.5} = 0.38 \\
+Z_3 &= \frac{198 - 235}{49.5} = -0.75 \\
+Z_4 &= \frac{334 - 235}{49.5} = 2 \\
+\end{align*}
+
+Dunque il punteggio $x_1 = 385$ dista $3.03$ deviazioni standard dalla media $235$, $x_2$ invece dista $0.38$ deviazioni standard dalla media e $x_4$ due volte. Questi tre punteggi risultano superiori della media, mentre $x_3$ inferiore e distante $0.75$ deviazioni standard dalla media.
+
+# Esercizio 6: Distribuzione Normale
+
+Supponiamo che la lunghezza del petalo di una specie di pianta sia distribuita normalmente con media $3.2$ cm e deviazione standard $1.8$ cm. Calcolare la probabilit${\`a}$ che 
+  1. ci sia un petalo maggiore di $4.5 cm$;
+  2. ci sia un petalo minore uguale di $1.78 cm$;
+  3. ci sia un petalo tra $2.9 cm$ e $3.6 cm$;
+  4. Rappresentare graficamente queste probabilit${\`a}$.
+  
+## Soluzione
+
+Pe calcolare le probabilit${\`a}$ richieste dobbiamo calcolare il valore standardizzato $Z$ per ogni lughezza richiesta all'interno della probabilit${\`a}$. Questo ${\`e}$ necessario per poi utilizzare le tavole della normale standard. Indichiamo con $X = \{\text{lunghezza del petalo}\}$ variabile aleatoria che si distribuisce secondo una normale con $\mu = 3.2 cm$ e deviazione standard $1.8 cm$, dunque:
+
+ 1. La probabilit${\`a}$ che ci sia un petalo maggiore di $4.5$ cm, ${\`e}$ pari a
+ 
+ $$
+ \Pr(X > 4.5)
+ $$
+ per calcolare questa probabilit${\`a}$ dovremmo utilizzare integrali etc, ma avendo le nostre belle tavole standardizzate, possiamo calcolarla trasformando il valore $4.5$ in modo che sia un punto $z$:
+ 
+ \begin{align*}
+ \Pr(X > 4.5) &= \Pr(\frac{X - \mu}{\sigma} > \frac{x - \mu}{\sigma}) \\
+ &= \Pr(Z > \frac{x - \mu}{\sigma}) =  \Pr(Z > \frac{4.5 - 3.2}{1.8}) \\
+ &= \Pr(Z >0.722)
+ \end{align*}
+
+La tavola della normale standard ci restituisce il valore di $z$ avendo il valore della probabilit${\`a}$ $\Pr(Z \le z)$ e viceversa. Sappiamo che $\Pr(Z > z) = 1 - \Pr(Z \le z)$, dunque:
+
+$$
+\Pr(Z >0.722) = 1 - \Pr(Z  \le 0.722) = 1 - 0.76424 = 0.23576
+$$
+
+In R:
+
+```{r}
+pnorm(4.5, mean = 3.2, sd = 1.8,lower.tail = FALSE)
+```
+
+con lower.tail indichiamo di considerare $\Pr(X > x)$. Oppure
+
+```{r}
+1-pnorm(4.5, mean = 3.2, sd = 1.8)
+```
+
+Possiamo anche considerare direttamente la normale standard, ponendo invece di $4.5$ il suo punto $z$ pari a $0.722$. In questo caso la media e la deviazione standard non vengono specificate poich${\`e}$ di default R considera la media $0$ e la varianza $1$ (ovvero la normale standard).
+
+```{r}
+pnorm(0.722,lower.tail = FALSE)
+```
+
+```{r}
+1-pnorm(0.722)
+```
+
+  2. Facciamo gli stessi passaggi per calcolare la probabilit${\`a}$ che ci sia un petalo minore uguale di $1.78$ cm:
+  
+\begin{align*}
+\Pr(X \le 1.78) &= \Pr(\frac{X - \mu}{\sigma} \le \frac{x - \mu}{\sigma}) = \Pr(Z\le \frac{x - \mu}{\sigma}) \\
+& = \Pr(Z\le \frac{1.78 - 3.2}{1.8}) = \Pr(Z\le -0.7888889) 
+\end{align*}
+
+Notiamo che il nostro punto standardizzato ${\`e}$ negativo, e normalmente le tavole standardizzate mostrano $\Pr(Z \le z)$ solo con $z$ che assume valori positivi. Tuttavia la distribuzione normale standard ${\`e}$ simmetrica intorno allo 0, dunque: 
+
+$$
+\Pr(Z \le -0.7888889) = 1 - \Pr(Z \le 0.7888889) = 0.2150885
+$$
+
+come si pu${\`o}$ vedere dal grafico di seguito:
+
+```{r, echo = F}
+x <- seq(-4, 4, length = 2000)
+y <- dnorm(x)
+plot(x, y, type = "l", ylab = "", xlab = "")
+lower_bound <- 0.7888889
+upper_bound <- 4
+bounds_filter <- x >= lower_bound & x <= upper_bound
+x_within_bounds <- x[bounds_filter]
+y_within_bounds <- y[bounds_filter]
+x_polygon <- c(lower_bound, x_within_bounds, upper_bound)
+y_polygon <- c(0, y_within_bounds, 0)
+polygon(x_polygon, y_polygon, col = "red")
+lower_bound <- -4
+upper_bound <- -0.7888889
+bounds_filter <- x >= lower_bound & x <= upper_bound
+x_within_bounds <- x[bounds_filter]
+y_within_bounds <- y[bounds_filter]
+x_polygon <- c(lower_bound, x_within_bounds, upper_bound)
+y_polygon <- c(0, y_within_bounds, 0)
+polygon(x_polygon, y_polygon, col = "red")
+```
+
+Le due aree rosse sono esattamente uguali, quella a sinistra descrive $\Pr(Z \le -0.7889)$ e quella a destra $\Pr(Z \ge -0.7889)$, ricordando che l'area sotto la curva ${\`e}$ pari a $1$.
+
+In R:
+
+```{r}
+pnorm(1.78, mean = 3.2, sd = 1.8)
+```
+
+oppure usando la normale standard:
+
+```{r}
+pnorm(-0.7888889)
+```
+
+
+  3. La probabilit${\`a}$ che ci sia un petalo tra $2.9$ cm e $3.6$ cm, ${\`e}$ pari a 
+  
+  \begin{align*}
+  \Pr(2.9 \ge X \le 3.6) &= \Pr(\frac{2.9 - 3.2}{1.8} \le Z \ge \frac{3.6 - 3.2}{1.8}) \\
+  &= \Pr(-0.1666667 \le Z \ge 0.2222222)
+  \end{align*}
+
+$\Pr(-0.1666667 \le Z \ge 0.2222222)$  ${\`e}$ pari alla differenza:
+
+$$
+\Pr(Z \le 0.2222222) - \Pr(Z \le -0.1666667)
+$$
+
+poich${\`e}$ stiamo cercando la seguente probabilit${\`a}$/area:
+
+```{r, echo = F}
+x <- seq(-4, 4, length = 2000)
+y <- dnorm(x)
+plot(x, y, type = "l", ylab = "", xlab = "")
+lower_bound <- -0.1666667
+upper_bound <- 0.2222222
+bounds_filter <- x >= lower_bound & x <= upper_bound
+x_within_bounds <- x[bounds_filter]
+y_within_bounds <- y[bounds_filter]
+x_polygon <- c(lower_bound, x_within_bounds, upper_bound)
+y_polygon <- c(0, y_within_bounds, 0)
+polygon(x_polygon, y_polygon, col = "red")
+```
+
+dunque prima calcoliamo $\Pr(Z \le 0.2222222)$, ovvero:
+
+```{r, echo = F}
+x <- seq(-4, 4, length = 2000)
+y <- dnorm(x)
+plot(x, y, type = "l", ylab = "", xlab = "")
+lower_bound <- -4
+upper_bound <- 0.2222222
+bounds_filter <- x >= lower_bound & x <= upper_bound
+x_within_bounds <- x[bounds_filter]
+y_within_bounds <- y[bounds_filter]
+x_polygon <- c(lower_bound, x_within_bounds, upper_bound)
+y_polygon <- c(0, y_within_bounds, 0)
+polygon(x_polygon, y_polygon, col = "red")
+```
+
+e poi togliamo la seguente area $\Pr(Z \le -0.1666667)$:
+
+```{r, echo = F}
+x <- seq(-4, 4, length = 2000)
+y <- dnorm(x)
+plot(x, y, type = "l", ylab = "", xlab = "")
+lower_bound <- -4
+upper_bound <- -0.1666667
+bounds_filter <- x >= lower_bound & x <= upper_bound
+x_within_bounds <- x[bounds_filter]
+y_within_bounds <- y[bounds_filter]
+x_polygon <- c(lower_bound, x_within_bounds, upper_bound)
+y_polygon <- c(0, y_within_bounds, 0)
+polygon(x_polygon, y_polygon, col = "red")
+```
+
+Dunque:
+
+$$
+\Pr(Z \le 0.2222222) =0.58706
+$$
+e
+
+$$
+\Pr(Z \le -0.1666667) =  1- \Pr(Z \le 0.1666667) = 0.4338162
+$$
+
+dunque
+
+$$
+\Pr(2.9 \le X \ge 3.6) = \Pr(-0.1666667 \le Z \ge 0.2222222) = 0.58706 - 0.4338162 = 0.1541134
+$$
+In R:
+
+```{r}
+pnorm(3.6, mean = 3.2, sd = 1.8) - pnorm(2.9, mean = 3.2, sd = 1.8) 
+```
+
+oppure usando la normale standard:
+
+```{r}
+pnorm(0.2222222) - pnorm(-0.1666667) 
+```
+ 
+  4. Per rappresentare graficamente queste probabilit${\`a}$ utilizziamo la curva di prima e coloriamo con diversi colori ciascuna probabilit${\`a}$:
+  
+```{r, echo = F}
+x <- seq(-4, 4, length = 2000)
+y <- dnorm(x)
+plot(x, y, type = "l", ylab = "", xlab = "")
+lower_bound <- 0.722
+upper_bound <- 4
+bounds_filter <- x >= lower_bound & x <= upper_bound
+x_within_bounds <- x[bounds_filter]
+y_within_bounds <- y[bounds_filter]
+x_polygon <- c(lower_bound, x_within_bounds, upper_bound)
+y_polygon <- c(0, y_within_bounds, 0)
+polygon(x_polygon, y_polygon, col = "orange")
+
+lower_bound <- -4
+upper_bound <- -0.7888889
+bounds_filter <- x >= lower_bound & x <= upper_bound
+x_within_bounds <- x[bounds_filter]
+y_within_bounds <- y[bounds_filter]
+x_polygon <- c(lower_bound, x_within_bounds, upper_bound)
+y_polygon <- c(0, y_within_bounds, 0)
+polygon(x_polygon, y_polygon, col = "green")
+
+lower_bound <- -0.1666667
+upper_bound <- 0.2222222
+bounds_filter <- x >= lower_bound & x <= upper_bound
+x_within_bounds <- x[bounds_filter]
+y_within_bounds <- y[bounds_filter]
+x_polygon <- c(lower_bound, x_within_bounds, upper_bound)
+y_polygon <- c(0, y_within_bounds, 0)
+polygon(x_polygon, y_polygon, col = "blue")
+```  
+
+dove l'area arancio indica $\Pr(Z \ge 0.722)$, verde $\Pr(Z \le -0.7888889)$, e blue $\Pr(-0.1666667 \le Z \ge 0.2222222)$. 
+
+
+# Esercizio 7: Distribuzione Normale
+
+La lunghezza di vita di una specie di lucertola ${\`e}$ distribuita normalmente con media di $10$ anni e deviazione standard di $3$ anni.
+
+ 1. Qual ${\`e}$ la probabilit${\`a}$ che una lucertola viva pi${\`u}$ di $14$ anni?
+ 
+ 2. Quanti anni hanno il $75\%$ delle lucertole? e il $5\%$?
+ 
+ 3. Qual ${\`e}$ la probabilit${\`a}$ che una lucertola viva pi${\`u}$ tra $8$ e $10$ anni?
+
+ 4. Rappresenta graficamente il valore che include il $30\%$ delle lucertole
+ 
+## Soluzione
+
+Indichiamo con $X = \{\text{lunghezza di vita}\}$ variabile aleatoria distribuita normalmente con media $\mu = 10$ e $\sigma = 3$.
+
+  1. La probabilit${\`a}$ che una lucertola viva pi${\`u}$ di $14$ anni ${\`e}$ pari a 
+  
+  $$
+  \Pr(X \ge 14) = \Pr(Z \ge \frac{14 - 10}{3}) = \Pr(Z \ge 1.333333) = 1 - \Pr(Z \le 1.333333) =  1 - 0.90824 = 0.09176
+  $$
+  
+In R:
+
+```{r}
+pnorm(14, mean = 10, sd = 3, lower.tail = F)
+```
+
+oppure
+
+```{r}
+pnorm(1.333333, lower.tail = F)
+```  
+  
+  2. Chiedere quanti anni hanno il $75\%$ delle lucertole significa calcolare il $75$ percentile, ovvero:
+  
+  $$
+  \Pr(X \le x) = 0.75 = \Pr(Z \le \frac{z - 10}{3})
+  $$
+basta semplicemente vedere il valore $z$ nella tabella corrispondente all probabilit${\`a}$ $0.75$, ovvero:
+
+$$
+\frac{z - 10}{3} = 0.67 \rightarrow z = 0.67 \cdot 3 + 10 = 12.01 \text{ anni}
+$$
+
+In R:
+
+```{r}
+qnorm(0.75, mean = 10, sd = 3)
+```
+
+
+  3. La probabilit${\`a}$ che una lucertola viva tra $8$ e $10$ anni, ${\`e}$ pari a:
+  
+$$
+\Pr(8 \le X \le 10) = \Pr(\frac{8 - 10}{3} \le Z \le \frac{10 - 10}{3}) = \Pr(-0.6666667 \le Z \le 0) 
+$$
+
+dobbiamo calcolare la seguente area:
+
+```{r, echo = F}
+x <- seq(-4, 4, length = 2000)
+y <- dnorm(x)
+plot(x, y, type = "l", ylab = "", xlab = "")
+lower_bound <- -0.6666667
+upper_bound <- 0
+bounds_filter <- x >= lower_bound & x <= upper_bound
+x_within_bounds <- x[bounds_filter]
+y_within_bounds <- y[bounds_filter]
+x_polygon <- c(lower_bound, x_within_bounds, upper_bound)
+y_polygon <- c(0, y_within_bounds, 0)
+polygon(x_polygon, y_polygon, col = "orange")
+```
+
+Ricordando che:
+
+$$
+\Pr(-0.6666667 \le Z \le 0) = \Pr(Z \le 0) - \Pr(Z \le -0.6666667)
+$$
+
+Calcoliamo prima la seguente area:
+
+```{r, echo = F}
+x <- seq(-4, 4, length = 2000)
+y <- dnorm(x)
+plot(x, y, type = "l", ylab = "", xlab = "")
+lower_bound <- -4
+upper_bound <- 0
+bounds_filter <- x >= lower_bound & x <= upper_bound
+x_within_bounds <- x[bounds_filter]
+y_within_bounds <- y[bounds_filter]
+x_polygon <- c(lower_bound, x_within_bounds, upper_bound)
+y_polygon <- c(0, y_within_bounds, 0)
+polygon(x_polygon, y_polygon, col = "orange")
+```
+
+$$
+\Pr(Z \le 0 ) = 0.5
+$$
+e sottraiamo la seguente area:
+
+```{r, echo = F}
+x <- seq(-4, 4, length = 2000)
+y <- dnorm(x)
+plot(x, y, type = "l", ylab = "", xlab = "")
+lower_bound <- -4
+upper_bound <- -0.6666667
+bounds_filter <- x >= lower_bound & x <= upper_bound
+x_within_bounds <- x[bounds_filter]
+y_within_bounds <- y[bounds_filter]
+x_polygon <- c(lower_bound, x_within_bounds, upper_bound)
+y_polygon <- c(0, y_within_bounds, 0)
+polygon(x_polygon, y_polygon, col = "orange")
+```
+
+$$
+\Pr(Z \le -0.6666667 ) = 1 - \Pr(Z \le 0.6666667 ) = 1 - 0.74857 = 0.25143
+$$
+
+Dunque:
+
+$$
+\Pr(-0.6666667 \le Z \le 0) = \Pr(Z \le 0) - \Pr(Z \le -0.6666667) = 0.5 - 0.25143 =  0.24857
+$$
+
+In R:
+
+```{r}
+pnorm(10, mean = 10, sd = 3) - pnorm(8, mean = 10, sd = 3)
+```
+
+oppure
+
+```{r}
+pnorm(0) - pnorm(-0.6666667)
+```
+
+  4. Il valore che include il $30\%$ delle lucertole, viene calcolato come nel punto $2$:
+  
+  $$
+  \Pr(X \le x) = \Pr(Z \le \frac{z - 10}{3}) = 0.3 \rightarrow z = -0.52 \cdot 3 + 10 = 8.44 \text{anni}
+  $$
+
+La tavola della normale standard considera valori di $\Pr(Z \le z)$ tra $0.5$ a $1$, mentre noi cerchiamo $0.3$. Tuttavia sappiamo che lo $z$ che include il $30\%$ delle lucertole, ${\`e}$ pari al negativo dello $z$ che include il $70\%$ delle lucertole. (Fate un grafico per verificare), dunque consideriamo lo $z$ in negativo della tabella rispetto a $\Pr(Z \le z) = 0.7$
+  
+In R:
+
+```{r}
+qnorm(0.3, mean = 10, sd = 3) 
+```
+
+# Esercizio 8: Media campionaria
+
+I perimetri toracici della popolazione maschile italiana di et${\`a}$ compresa tra $18$ e $75$ anni, si distribuiscono normalmente con media $\mu = 75cm$ e deviazione standard $\sigma = 19cm$. Determinare la probabilit${\`a}$ che il perimetro toracico medio calcolato in un campione casuale di $n = 100$ superi i $79.75cm$.
+
+## Soluzione
+
+Ci viene chiesto di calcolare una probabilit${\`a}$ considerando come variabile aleatoria il perimetro toracico **medio**. Possiamo risolvere questo esercizio utilizzando il teorema del limite centrale, che ci dice:
+
+Se la popolazione si distribuisce come una normale con media $\mu$ e varianza $\sigma^2$, allora con $n$ sufficientemente grande, la media campionaria della popolazione si distribuisce anche lei come una normale con media $\mu$ e varianza pari a $\sigma^2/n$. Dunque nel nostro caso, la media ${\`e}$ $75cm$ e  la deviazione standard $19/\sqrt{100}$.
+
+Identifichiamo con $\bar{X}$ la distribuzione dei perimetri torarcici maschili, la probabilit${\`a}$ richiesta ${\`e}$ pari a:
+
+$$
+\Pr(\bar{X} > 79.75) = \Pr(Z > \frac{(79.75-75)}{19/\sqrt{100}}) = \Pr(Z > 2.5) = 1 - \Pr(Z < 2.5) = 1 - 0.99379 = 0.00621
+$$
+In R:
+
+```{r}
+pnorm(79.75, mean = 75, sd = 19/sqrt(100), lower.tail = FALSE)
+```
+
+oppure 
+
+```{r}
+pnorm(2.5, lower.tail = FALSE)
+```

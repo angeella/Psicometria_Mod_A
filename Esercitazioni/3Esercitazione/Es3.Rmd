@@ -1,0 +1,312 @@
+---
+title: 'Esercitazione 3: Basi di Probabilit${\`a}$, Indipendenza, condizionamento e Bayes'
+author: "Angela Andreella"
+date: "03/11/2020"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
+```
+
+# Esercizio 1
+  
+Riprendiamo l'esercizio 14.2.2.0.2 Esercizio della dispensa.
+
+ - Verificare le propriet${\`a}$ sopra enunciate nei tre casi presi in esame (moneta, dadi, terapia)
+ -Definire una variabile aleatoria (Spazio Campionario e distribuzione di
+probabilit${\`a}$) e verificarne le propriet${\`a}$.
+
+## Soluzione
+
+Per prima cosa facciamo un riassunto delle propriet${\`a}$ della probabilit${\`a}$:
+
+ 1. Il valore della probabilit${\`a}$ di un evento assume valori tra $0$ e $1$: $0 \le \Pr(X) \le 1$;
+ 2. La somma delle probabilit${\`a}$ considerando tutti gli eventi dello spazio campionario $\Omega$ ${\`e}$ pari a 1: $\sum_{x \in \Omega} \Pr(X = x) = 1$;
+ 3. Considerando due eventi dello spazio campionario, la probabilit${\`a}$ che si verifichi un evento o l'altro ${\`e}$ pari alla somma delle due singole probabilit${\`a}$: Per esempio avendo i due eventi $x_1$ e $x_2$ nello spazio campionario $\Omega$, $\Pr(\cup_{i = 1}^{2} Pr(X = x_i) = \sum_{i = 1}^2 \Pr(X = x_i) = \Pr(X = x_1) + \Pr(X= x_2)$
+
+Dunque nel caso della moneta:
+
+ 1. Abbiamo due eventi (Testa e Croce), dove le probabilit${\`a}$ associate sono uguali a $0.5$, valore compreso tra $0$ e $1$;
+ 
+ 2. Ponendo $Testa = x_1 = 1$ e $Croce = x_2 = 0$, vediamo che $\Pr(X= 1) + \Pr(X = 0) = 0.5 + 0.5 = 1$;
+ 
+ 3. Le probabilit${\`a}$ che si verifichi testa o croce ${\`e}$ pari a $\Pr(\cup_{i = 1}^{2} Pr(X = x_i) = \sum_{i = 1}^2 \Pr(X = x_i) = \Pr(X = x_1) + \Pr(X= x_2) = 0.5 + 0.5 = 1$. Non possono avverarsi contemporanemante (mutuamente esclusivi ed esausitivi), e se ci pensiamo senza tante formule la proabilit${\`a}$ che si verifichi o testa o croce ${\`e}$ pari a 1, cio${\`e}$ probabilit${\`a}$ massima, certezza :)
+ 
+Nel caso del dado:
+
+  1. Abbiamo $6$ eventi (Esce $1$, $2$, $3$, $4$, $5$ e $6$), ogni evento ha probabilit${\`a}$ $1/6$ di avverarsi, valore compreso tra $0$ e $1$;
+  
+  2. Ponendo $"\text{"Esce 1"} = x_1 = 1$, $\text{"Esce 2"} = x_2  = 2$, $\text{"Esce 3"} = x_3 = 3$, $\text{"Esce 4"} = x_4 = 4$, $\text{"Esce 5"} = x_5 = 5$, $\text{"Esce 6"} = x_6 = 6$, vediamo che $\Pr(X= x_1) + \Pr(X = x_2) + \Pr(X = x_3)  + \Pr(X = x_4)  + \Pr(X = x_5)  + \Pr(X = x_6)  = 1/6 + 1/6 + 1/6 + 1/6 + 1/6 + 1/6 = 1$;
+  
+  3. Prendendo per esempio i primi tre eventi $x_1$, $x_2$, $x_3$. La probabilit${\`a}$ che si verifichi uno dei tre ${\`e}$ pari a $\Pr(\cup_{i = 1}^{3} Pr(X = x_i) = \sum_{i = 1}^3 \Pr(X = x_i) = \Pr(X = x_1) + \Pr(X= x_2) + \Pr(X = x_3) = 1/6 + 1/6 + 1/6= 3/6$
+ 
+Nel caso della terapia:
+
+  1. Abbiamo $2$ eventi (Esito Positivo e Negativo), dove il primo ha probabilit${\`a}$ $0.9$ di avverarsi e il secondo $0.1$, entrambi sono valori compresi tra $0$ e $1$;
+  
+  2. Ponendo $\text{Positivo} = x_1 = 1$ e $\text{Negativo} = x_2 = 0$, vediamo che $\Pr(X = x_1) + \Pr(X = x_2) = 0.9 + 0.1 = 1$;
+  
+  3. La probabilit${\`a}$ che il Test sia Positivo o Negativo anche qui come per la moneta avendo due eventi solamente nello spazio campionario questa probabilit${\`a}$ ${\`e}$ pari a 1: $\Pr(\cup_{i = 1}^{2} Pr(X = x_i) = \sum_{i = 1}^2 \Pr(X = x_i) = \Pr(X = x_1) + \Pr(X= x_2) = 0.9 + 0.1 = 1$. 
+  
+# Esercizio 2
+
+Riprendiamo l'esercizio 14.2.2.0.2 Esercizio della dispensa.
+
+Definire una variabile aleatoria (Spazio Campionario e distribuzione di probabilit${\`a}$) e verificarne le propriet${\`a}$.
+
+## Soluzione
+
+Facciamo tre esempi:
+
+ 1. Si ha un'urna con $9$ bigliettini numerati da $1$ a $9$ e si pesca un bigliettino. Definiamo la nostra variabile aleatoria come $X = \text{Valore numerico del bigliettino pescato}$, lo spazio campionario saranno i numeri dei bigliettini, ovvero $\Omega = \{1, 2, 3, 4, 5, 6, 7, 8 , 9\}$. La distribuzione di probabilit${\`a}$ invece:
+ 
+$$
+ \Pr(X = x) = \begin{cases}
+    1/9, & \text{se $x = 1$}.\\
+    \vdots &\\
+    1/9, & \text{se $x = 9$}.\\
+  \end{cases}
+$$
+
+ 2. Si considera un mazzo di $52$ carte da gioco, peschiamo una carta ma teniamo conto solo del seme. Definiamo la variabile aleatoria $X = \text{Seme pescato}$, lo spazio campionario sar${\`a}$ $\Omega = \{\text{Cuori, Fiori, Picche, Quadri}\}$. La distribuzione di probabilit${\`a}$ invece:
+ 
+$$
+ \Pr(X = x) = \begin{cases}
+    13/52, & \text{se $x = \text{Cuori}$}.\\
+    13/52, & \text{se $x = \text{Fiori}$}.\\
+    13/52, & \text{se $x = \text{Picche}$}.\\
+    13/52, & \text{se $x = \text{Quadri}$}.\\
+  \end{cases}
+$$
+
+ 3. Ora consideriamo l'esempio $2$ di sopra ma considerando solamente i numeri. La variabile aleatoria ${\`e}$ definita come $X = \text{Numero pescato}$, lo spazio campionario sar${\`a}$ $\Omega = \{1,\dots, 13\}$. La distribuzione di probabilit${\`a}$ invece:
+ 
+$$
+ \Pr(X = x) = \begin{cases}
+    $4/52$, & \text{se $x = 1$}.\\
+    $4/52$, & \text{se $x = 2$}.\\
+    \vdots & \\
+    $4/52$, & \text{se $x = 12$}.\\
+    $4/52$, & \text{se $x = 13$}.\\
+  \end{cases}
+$$
+ 
+# Esercizio 3
+
+Calcolare la probabilit${\`a}$ di avere un numero pari nel lancio di un dado non truccato. 
+
+## Soluzione
+
+Per prima cosa identifichiamo la variabile casuale, ovvero $X = \text{Esito di un lancio di un dado}$. Calcolare la probabilit${\`a}$ di avere un numero pari nel lancio di un dado non truccato significa che vogliamo che esca $2$, o $4$ o $6$. Abbiamo gi${\`a}$ visto che lo spazio campionario ${\`e}$ pari a $\Omega = \{1, \dots, 6\}$, e la probabilti${\`a}$ che esca fuori uno di questi numeri ${\`e}$ pari a $1/6$. Dunque:
+
+$$
+\Pr(X \text{ sia pari}) = \Pr(X \text{ sia 2  o 3 o 4} ) = \Pr(\cup_{x_i \in \{2, 4, 6\}} X = x_i) =  \Pr(X = 2) + \Pr(X = 4) + \Pr(X = 6) = 3/6
+$$
+Abbiamo utilizzato la terza propriet${\`a}$ delle probabilit${\`a}$.
+
+# Esercizio 4
+
+Calcolare la probabilit${\`a}$ che un uovo cada a destra del tavolo sapendo che la probabilit${\`a}$ che cada a sinistra ${\`e}$ pari a $0.3$. L'uovo pu${\`o}$ cadere solo a destra o a sinistra.
+
+## Soluzione
+
+Abbiamo visto che la somma delle probabilit${\`a}$ considerando tutti gli eventi possibili ${\`e}$ pari a 1. Dunque
+
+$$
+1 = \Pr(\text{l'uovo cade a sx}) + \Pr(\text{l'uovo cade a dx}) = 0.3 + \Pr(\text{l'uovo cade a dx}) \rightarrow \Pr(\text{l'uovo cade a dx}) = 1 - 0.3 = 0.7
+$$
+Questi esercizi si possono svolgere anche senza troppa notazione (perch${\`e}$ relativamente semplici), ma se le cose si complicano ${\`e}$ consigliato definire la variabile aleatoria, lo spazio campionario, gli eventi e la distribuzione di probabilit${\`a}$. In questo caso:
+
+$$
+\text{Variabile aleatoria}: X = \text{Caduta dell'uovo}
+$$
+$$
+\text{Spazio Campionario}: \Omega = \{Dx, Sx\}
+$$
+$$
+\text{Distribuzione di prob.}: \Pr(X = x) = \begin{cases}
+0.3 & \text{se } x = "Sx"\\
+0.7 & \text{se } x = "Dx"\\
+\end{cases}
+$$
+
+# Esercizio 5
+
+Si lanciano due dadi non truccati. Qual ${\`e}$ la probabilit${\`a}$ di avere un numero pari nel primo e un numero dispari nel secondo.
+
+## Soluzione
+
+Qui dobbiamo ricordarci del concetto di indipendenza tra due variabili aleatorie che descrivono l'esito dei due dadi. Sappiamo che i due dadi non sono dipendenti tra di loro (un dado non vede cosa fa l'altro o non l'influenza in alcun modo :)). Dunque identifichiamo con
+
+$$
+X = \{\text{Esito primo dado}\}
+$$
+$$
+Y = \{\text{Esito secondo dado}\}
+$$
+Dunque vogliamo che nel primo dado esca un numero pari che la probabilit${\`a}$ ${\`e}$ stata calcolata nell' Es. 3: $\Pr(\text{numero pari}) = 3/6$, e nel secondo dado un numero dispari che la probabilit${\`a}$ ${\`e}$ sempre $3/6$, difatti:
+
+
+$$
+\Pr(Y \text{ sia dispari}) = \Pr(X \text{ sia 1  o 3 o 5} ) = \Pr(\cup_{x_i \in \{1, 3, 5\}} X = x_i) =  \Pr(X = 1) + \Pr(X = 3) + \Pr(X = 5) = 3/6
+$$
+Calcolare la probabilit${\`a}$ che $\{\text{X pari} \}$ e $\{\text{Y dispari} \}$, significa che vogliamo contemporaneamente questi due eventi, ovvero si considera l'intersezione di questi due eventi (E). Avendo detto che i due eventi $\{\text{X pari} \}$ $\{\text{Y dispari} \}$ sono indipendenti,
+allora:
+
+$$
+\Pr(\text{X pari} \cap \text{Y dispari}) = \Pr(\text{X pari}) \Pr(\text{X dispari}) = 3/6 \cdot 3/6 = 9/36 = 0.25
+$$
+
+Se avessimo tirato i due dadi contemporaneamente e volessimo sapere la probabilit${\`a}$ di avere un numero pari e un numero dispari senza contare in quale dato, dovremmo considerare anche il caso $\{X dispari\}$ e $\{Y pari\}$, ovvero:
+
+\begin{align*}
+&\Pr(\text{X pari} \cap \text{Y dispari}) \cup  \Pr(\text{X dispari} \cap \text{Y pari}) \\
+&= \Pr(\text{X pari}) \Pr(\text{X dispari}) + \Pr(\text{X dispari}) \Pr(\text{X pari})\\
+&= 3/6 \cdot 3/6 + 3/6 \cdot 3/6= 9/36 \cdot 9/36= 0.25 + 0.25 = 0.5
+\end{align*}
+
+La probabilit${\`a}$ ${\`e}$ maggiore rispetto a quella precedente avendo pi${\`u}$ possibilit${\`a}$.
+
+# Esercizio 6
+
+Supponiamo di avere un' urna contenente $3$ palline nere, e $2$ rosse. Supponiamo di estrarre due palline senza reimmisione nell' urna, una dopo l' altra. Calcolare le seguenti probabilit${\`a}$:
+ 
+ 1. La seconda pallina ${\`e}$ rossa;
+ 2. La seconda pallina ${\`e}$ nera, e la prima pallina ${\`e}$ rossa;
+ 3. Entrambe le palline sono nere.
+ 
+## Soluzione
+
+ 1. Per prima cosa chiediamoci, quali sono i vari eventi possibili per avere l'evento di interesse $\{\text{seconda pallina rossa}\}$? Indichiamo con $N$ le palline nere e con $R$ le palline rosse. Poniamo l'indice $1$ e $2$ per identificare la prima o seconda pescata, per esempio $N_1$ indica che nella prima pescata ho preso una pallina nera, $R_2$ nella seconda pescata ho preso una pallina rossa. Dunque l'evento di interesse che indichiamo con $E$, avviene nei seguenti eventi:
+ 
+  - Estraggo la prima pallina rossa, e la seconda rossa;
+  - Estraggo la prima pallina nera, e la seconda rossa;
+  
+  che si possono riscrivere:
+  
+  - $E_1 = R_1 \cap R_2$;
+  - $E_2 = N_1 \cap R_2$;
+ 
+Dunque la nostra probabilit${\`a}$ di interesse ${\`e}$ $\Pr(E) = \Pr(E_1) \cup \Pr(E_2)$, essendo $E_1$ ed $E_2$ indipendenti tra loro (sono due pescate diverse), possiamo scrivere $\Pr(E) = \Pr(E_1) + \Pr(E_2)$. Dobbiamo calcolare $\Pr(E_1)$ e $\Pr(E_1)$. Per poter fare ci${\`o}$ dobbiamo riprendere il teorema di Bayes, in generale
+
+$$
+\Pr(A \mid B) = \frac{\Pr(A \cap B)}{\Pr(B)}
+$$
+
+cosa significa? La probabilit${\`a}$'che avvenga l'evento A dato B ${\`e}$ pari alla probabilit${\`a}$ dell'intersezione degli eventi diviso la probabilit${\`a}$ dell'evento B. Questo ci fa pensare alle frequenze condizionate che abbiamo visto nelle scorse esercitazioni, potete vedere in linea di massima $\Pr(B)$ come la frequenza marginale in analisi, e $\Pr(A \cap B)$ come la frequenza congiunta:
+
+$$
+p_{i \mid j} = f_{ij}/ f_{\cdot j}
+$$
+Riprendendo il nostro esercizio, dobbiamo calcolare $\Pr(R_1 \cap R_2)$, visto che sicuramente la seconda estrazione dipende dalla prima (poich${\`e}$ non rimettiamo dentro la prima pallina nell'urna), allora:
+
+$$
+\Pr(R_1 \cap R_2) = \Pr(R_2 \mid R_1) \Pr(R_1)
+$$
+
+Ok, quindi dobbiamo calcolare $\Pr(R_1)$ e $\Pr(R_2 \mid R_1)$. Iniziamo con la prima, ogni pallina ha la stessa possibilit${\`a}$ di essere pescata nel primo giro, dunque avendo $5$ palline la $\Pr(R_1)$ ${\`e}$ pari a $2/5$, avendo $2$ palline rosse. Ora calcoliamo $\Pr(R_2 \mid R_1)$. Sappiamo che la prima pallina ${\`e}$ rossa, poich${\`e}$ abbiamo condizionato a $R_1$, dunque dobbiamo togliere una pallina rossa dall'urna immaginaria. Non abbiamo pi${\`u}$ $5$ palline totali ma $4$ di cui $1$ rossa e $3$ nere, quindi $\Pr(R_2 \mid R_1) = 1/4$. Dunque:
+
+$$
+\Pr(E_1) = \Pr(R_1 \cap R_2) = \Pr(R_1) \Pr(R_2 \mid R_1) =2/5 \cdot 1/4
+$$
+
+Usiamo lo stesso metodo per calcolare la probabilit${\`a}$ di $E_2 = N_1 \cap R_2$:
+
+$$
+\Pr(E_2) = \Pr(N_1 \cap R_2) = \Pr(N_1) \Pr(R_2 \mid N_1) =3/5 \cdot 2/4
+$$
+dunque infine
+
+$$
+\Pr(E_1 \cap E_2) = \Pr(E_1) + \Pr(E_2) = 2/5 \cdot 1/4 + 3/5 \cdot 2/4 = 0.4
+$$
+ 2. Usando la notazione precedente, questo significa calcolare:
+ 
+ $$
+ \Pr(R_1 \cap N_2) = \Pr(R_1) \Pr(N_2 \mid R_1) = 2/5 \cdot 3/4 = 0.3
+ $$
+ 3. Usando la notazione precedente, questo significa calcolare:
+ 
+ $$
+ \Pr(N_1 \cap N_2) = \Pr(N_1) \Pr(N_2 \mid N_1) = 3/5 \cdot 2/4 = 0.3
+ $$
+
+# Esercizio 7
+
+Il test del “palloncino” che indica la presenza di alcol nell’organismo, ha esito positivo per il $4\%$ delle persone controllate. L’esperienza ha mostrato che, con questa prova, il $98\%$ delle persone con risultato positivo era effettivamente in stato di ebrezza e che il $98\%$ delle persone con esito negativo non lo era.
+
+ 1. Qual ${\`e}$ la probabilit${\`a}$ che l’alcool test dia esito positivo per una persona che non ha bevuto?
+ 
+ 2. Qual ${\`e}$ la probabilit${\`a}$ che l’alcol test dia esito negativo per una persona che ha bevuto?
+ 
+## Soluzione
+ 
+ 1. Diamo una notazione ai vari eventi $P = \text{Test Positivo}$, $N = \text{Test Negativo}$, $A = \{\text{la persona ha bevuto alcolici}\}$, $NA = \{\text{la persona non ha bevuto alcolici}\}$.
+ 
+ Vogliamo dunque calcolare $\Pr(P \mid NA)$.
+ 
+ Che informazioni ci fornisce il testo?
+  - Esito positivo per il $4\%$ delle persone controllate, ovvero $\Pr(P) = 0.04$.
+  - Il $98\%$ delle persone con risultato positivo era effettivamente in stato di ebrezza, ovvero $\Pr(A \mid P) = 0.98$
+  - Il $98\%$ delle persone con esito negativo non lo era, ovvero $\Pr(NA \mid N) = 0.98\%$.
+  
+Possiamo ricavarci inoltre queste informazioni:
+
+  - $\Pr(N) = 1 - \Pr(P) = 1- 0.04 = 0.96$;
+  - $\Pr(NA \mid P) = 0.02$;
+  - $\Pr(A \mid N) = 0.02$.
+  
+Noi dobbiamo calcolare $\Pr(P \mid NA)$, usiamo il teorema di bayes:
+
+$$
+\Pr(P \mid NA) = \frac{\Pr(P \cap NA)}{\Pr( NA)}
+$$
+Dunque dobbiamo ricavarci $\Pr(P \cap NA)$ e  $\Pr( NA)$. Iniziamo con $\Pr(P \cap NA)$. Utilizziamo la regola del prodotto:
+
+$$
+\Pr(P \cap NA) = \Pr(NA \mid P) \Pr(P) = 0.02 \cdot 0.04 
+$$
+
+Per calcolare $\Pr( NA)$ invece utilizziamo il teorema delle probabilit${\`a}$ totali:
+
+$$
+\Pr(NA) = \Pr(NA \mid P) \Pr(P) + \Pr(NA \mid N) \Pr(N) =  0.02 \cdot 0.04 + 0.98 \cdot 0.96 = 0.9416
+$$
+Dunque la nostra probabilit${\`a}$ finale ${\`e}$ pari a:
+
+$$
+\Pr(P \mid NA) = \frac{0.02 \cdot 0.04 }{0.9416} = 0.00085
+$$
+
+ 2. Vogliamo dunque calcolare $\Pr(N \mid A)$, si svolgono gli stessi passaggi di prima
+ 
+ $$
+ \Pr(N \mid A) = \frac{ \Pr(N \cap A)}{\Pr(A)} = \frac{\Pr(A \mid N)\Pr(N)}{\Pr(A \mid N)\Pr(N) + \Pr(A \mid P)\Pr(P)} = \frac{0.02 \cdot 0.96}{0.02 \cdot 0.96 + 0.98 \cdot 0.04} = 0.33
+ $$
+ 
+# Esercizio 8
+
+Il $30\%$ degli iscritti a un corso di nuoto sono femmine. Inoltre il $5\%$ di questi sono fumatori, mentre tra i maschi il $15\%$ sono fumatrici. Qual ${\`e}$ la probabilit${\`a}$ che, scegliendo a caso un fumatore, questo sia maschio?
+
+## Soluzione
+
+Indichiamo con $F$ l'evento femmina, con $M$ maschio, con $Fm$ fumatori e con $NFm$ non fumatori.
+Vediamo che informazioni ci fornisce il testo:
+
+  - Il $30\%$ degli iscritti a un corso di nuoto sono femmine: $\Pr(F) = 0.3$;
+  - Il $5\%$ di questi sono fumatori: $\Pr(Fm \mid F) = 0.05$;
+  - Tra i maschi il $15\%$ sono fumatrici:  $\Pr(Fm \mid M) = 0.15$;
+
+Usando le propriet${\`a}$ della probabilit${\`a}$ possiamo ricavarci:
+
+  - $\Pr(M) = 1 - \Pr(F) = 1 - 0.3 = 0.7$
+  
+Vogliamo calcolare la probabilit${\`a}$ che, scegliendo a caso un fumatore, questo sia maschio, ovvero $\Pr(M \mid Fm)$. Usiamo il teorema di bayes, e il teorema delle probabilit${\`a}$ totali:
+
+$$
+\Pr(M \mid Fm) = \frac{\Pr(M \cap Fm)}{\Pr(Fm)} = \frac{\Pr(Fm \mid M) \Pr(M)}{\Pr(Fm \mid M) \Pr(M) \Pr(Fm \mid F) \Pr(F)} = \frac{0.15 \cdot0.7}{0.15\cdot 0.7 + 0.05 \cdot 0.3}= 0.986
+$$
